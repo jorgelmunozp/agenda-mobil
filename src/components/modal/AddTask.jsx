@@ -1,58 +1,33 @@
-import React from "react";
-import { Modal, Pressable, View, Text, StyleSheet, Platform } from "react-native";
-import { Input } from "../input/Input";
-import { DateInput } from "../input/DateInput";
-import { TimeInput } from "../input/TimeInput";
-import { colors } from "../../theme/colors";
+import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../theme/colors';
+import { DateInput } from '../input/DateInput';
+import { Input } from '../input/Input';
+import { TimeInput } from '../input/TimeInput';
 
 export const AddTask = ({ visible, onClose, form, onChange, onSave }) => {
   return (
     <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
-      {/* overlay clicable */}
-      <Pressable style={s.overlay} onPress={onClose}>
-        {/* contenido: no propaga el click */}
-        <Pressable style={s.modal} onPress={() => {}}>
+      <View style={s.overlay}>
+        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
+        <View style={s.modal}>
           <Text style={s.label}>Nombre</Text>
           <View style={s.field}>
-            <Input
-              value={form.name}
-              onChangeText={(v) => onChange("name", v)}
-              isIcon={false}
-              placeholder="Nombre"
-              style={s.inputFull}
-            />
+            <Input value={form.name} onChangeText={(v) => onChange('name', v)} isIcon={false} placeholder="Nombre" style={s.inputFull} inputStyle={s.inputSingle} />
           </View>
 
           <Text style={s.label}>Fecha</Text>
-          <View style={[s.field, s.clip]}>
-            <DateInput
-              value={form.date}
-              onChange={(v) => onChange("date", v)}
-              style={s.inputFull}
-              inputStyle={{ paddingRight: 36 }}
-            />
+          <View style={s.field}>
+            <DateInput value={form.date} onChange={(v) => onChange('date', v)} style={s.inputFull} inputStyle={s.inputSingle} />
           </View>
 
           <Text style={s.label}>Hora</Text>
-          <View style={[s.field, s.clip]}>
-            <TimeInput
-              value={form.time}
-              onChange={(v) => onChange("time", v)}
-              style={s.inputFull}
-              inputStyle={{ paddingRight: 36 }}
-            />
+          <View style={s.field}>
+            <TimeInput value={form.time} onChange={(v) => onChange('time', v)} style={s.inputFull} inputStyle={s.inputSingle} />
           </View>
 
           <Text style={s.label}>Mensaje</Text>
           <View style={s.field}>
-            <Input
-              value={form.message}
-              onChangeText={(v) => onChange("message", v)}
-              isIcon={false}
-              placeholder="Mensaje"
-              multiline
-              style={s.inputFull}
-            />
+            <Input value={form.message} onChangeText={(v) => onChange('message', v)} isIcon={false} placeholder="Mensaje" multiline style={s.inputFull} inputStyle={s.inputMultiline} />
           </View>
 
           <View style={s.modalActions}>
@@ -60,36 +35,23 @@ export const AddTask = ({ visible, onClose, form, onChange, onSave }) => {
               <Text style={s.primaryText}>Guardar</Text>
             </Pressable>
           </View>
-        </Pressable>
-      </Pressable>
+        </View>
+      </View>
     </Modal>
   );
 };
 
 const s = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: "rgba(0,0,0,.35)", justifyContent: "center", padding: 20 },
-  modal: { backgroundColor: colors.bg, borderRadius: 16, padding: 16, width: "90%", maxWidth: 900, alignSelf: "center" },
-  label: { color: "#0f172a", fontWeight: "600", marginTop: 1, fontSize: 12 },
-
-  // uniformidad de ancho
-  field: { width: "100%", alignSelf: "stretch", marginBottom: 12 },
-  inputFull: { width: "100%" },
-
-  // evita que adornos/íconos externos sobresalgan en web
-  clip: {
-    width: "100%",
-    alignSelf: "stretch",
-    maxWidth: "100%",
-    overflow: "hidden",
-    borderRadius: 10,
-    ...Platform.select({ web: { display: "block" } }),
-  },
-
-  modalActions: { flexDirection: "row", justifyContent: "flex-end", gap: 10, marginTop: 12 },
-
-  // botón primario (igual que en tu pantalla)
-  primaryBtn: { backgroundColor: colors.black, borderRadius: 10, paddingVertical: 16, width: "100%", alignItems: "center" },
-  primaryText: { color: colors.white, fontWeight: "700" },
+  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)', justifyContent: 'center', padding: 20 },
+  modal: { backgroundColor: colors.bg, borderRadius: 16, padding: 16, width: '90%', maxWidth: 900, alignSelf: 'center', ...Platform.select({ web: { outlineStyle: 'none' } }) },
+  label: { color: '#0f172a', fontWeight: '600', marginTop: 6, fontSize: 12 },
+  field: { width: '100%', alignSelf: 'stretch', marginBottom: 14 },
+  inputFull: { width: '100%' },
+  inputSingle: { height: 48, minHeight: 48, paddingVertical: 12 },
+  inputMultiline: { minHeight: 120, textAlignVertical: 'top', paddingTop: 12, paddingBottom: 12 },
+  modalActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 10, marginTop: 12 },
+  primaryBtn: { backgroundColor: colors.black, borderRadius: 10, paddingVertical: 16, width: '100%', alignItems: 'center' },
+  primaryText: { color: colors.white, fontWeight: '700' },
 });
 
 export default AddTask;

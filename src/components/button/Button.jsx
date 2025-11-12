@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Text, Pressable } from 'react-native';
 import { colors } from '../../theme/colors';
 import { styles } from '../../theme/styles';
-import { sp, fs } from '../../../dimensions';
+import { sp, fs } from '../../../src/dimensions';
 
 export const Button = (props) => (
     <Pressable

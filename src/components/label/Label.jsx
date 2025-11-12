@@ -1,18 +1,16 @@
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import { fs, sp } from '../../../src/dimensions';
 import { colors } from '../../theme/colors';
 import { styles } from '../../theme/styles';
-import { fs, sp } from '../../../dimensions';
 
-export const Label = ({ children }) => (
-    <Text style={s.label}>{children}</Text>
-);
+export const Label = ({ children }) => <Text style={s.label}>{children}</Text>;
 
-const s = StyleSheet.create({ 
-    label:{
-        color: colors.hint, 
-        fontSize: fs(styles.subtitle), 
-        textAlign: 'center',
-        marginBottom: sp(styles.gapLg), 
-        fontFamily: 'Itim_400Regular'
-    } 
+const s = StyleSheet.create({
+  label: {
+    color: colors.hint,
+    fontSize: fs(styles.subtitle),
+    textAlign: 'center',
+    marginVertical: sp(styles.gapLg),
+    fontFamily: 'Itim_400Regular',
+  },
 });

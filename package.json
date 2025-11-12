@@ -1,5 +1,5 @@
 {
-  "name": "organizeu-expo-r8-definitive",
+  "name": "organizeuapp",
   "version": "1.0.0",
   "private": true,
   "main": "expo-router/entry",
@@ -8,6 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "web:clear": "expo start --web -c",
     "doctor": "npx expo doctor --fix"
   },
   "dependencies": {

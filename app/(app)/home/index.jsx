@@ -7,7 +7,7 @@ import { router } from "expo-router";
 import { AppMenu } from "../../../src/components/menu/AppMenu";
 import { Title } from "../../../src/components/title/Title";
 import { SearchInput } from "../../../src/components/search/SearchInput";
-import { sp } from '../../../dimensions';
+import { sp } from '../../../src/dimensions';
 import { colors } from "../../../src/theme/colors";
 import { styles } from '../../../src/theme/styles';
 import { Feather } from '@expo/vector-icons';

@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
 import { useContext } from "react";
 import { AuthContext } from '../../services/auth/authContext';
-import { sp, fs } from '../../../dimensions';
+import { sp, fs } from '../../../src/dimensions';
 import { colors } from '../../theme/colors';
 import { Feather } from '@expo/vector-icons';
 import { useMenu } from '../../hooks/useMenu';

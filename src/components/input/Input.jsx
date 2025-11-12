@@ -1,22 +1,18 @@
-import { View, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, TextInput, View, Platform } from 'react-native';
+import { fs, sp } from '../../../src/dimensions';
 import { colors } from '../../theme/colors';
 import { styles } from '../../theme/styles';
-import { sp, fs } from '../../../dimensions';
 
-export const Input = (props) => (
-  <View style={[s.inputWrap,{height:sp(styles.inputH), marginBottom:sp(styles.gapLg)}]}>
-    { props.isIcon && <Ionicons name={props.icon} size={fs(styles.icon)} color={colors.black}
-                        style={s.icon} />
-    }
-    <TextInput value={props.value} onChangeText={props.onChangeText}
-      style={s.input} placeholderTextColor="#9ca3af" { ...props }
-    />
+export const Input = ({ value, onChangeText, placeholder, style, inputStyle, isIcon = false, icon = 'person', placeholderTextColor = '#9CA3AF', ...props }) => (
+  <View style={[s.wrap, { height: sp(styles.inputH) }, style]}>
+    {isIcon && <Ionicons name={icon} size={fs(styles.icon)} color={colors.black} style={s.icon} />}
+    <TextInput value={value} onChangeText={onChangeText} placeholder={placeholder} placeholderTextColor={placeholderTextColor} {...props} style={[s.input, isIcon && { paddingLeft: fs(styles.icon) + 26 }, inputStyle]} />
   </View>
 );
 
-const s=StyleSheet.create({ 
-  inputWrap:{ position:'relative', backgroundColor:colors.white, borderRadius:14, marginBottom:12, borderWidth:1, borderColor:'#d3d3d3' },
-  input:{fontSize:fs(16), height:'100%',borderWidth:1,borderColor:colors.lightgray,borderRadius:8,textAlign:'center',backgroundColor:'#FFFFFF',color:'#000'},
-  icon: {top:(sp(styles.inputH)-fs(styles.icon))/2, position:'absolute', left:14}
+const s = StyleSheet.create({
+  wrap: { position: 'relative', width: '100%', alignSelf: 'stretch', backgroundColor: colors.white, borderRadius: 14, borderWidth: 1, borderColor: '#d3d3d3' },
+  input: { fontSize: fs(16), height: '100%', textAlign:'center', paddingHorizontal: 12, textAlignVertical: 'center', backgroundColor: 'transparent', color: '#000', borderWidth: 0, borderRadius: 12, ...Platform.select({ web: { outlineStyle: 'none' } }) },
+  icon: { position: 'absolute', left: 14, top: (sp(styles.inputH) - fs(styles.icon)) / 2 },
 });

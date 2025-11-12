@@ -8,7 +8,7 @@ import { Title } from '../../../../../src/components/title/Title';
 import { Button } from '../../../../../src/components/button/Button';
 import { colors } from '../../../../../src/theme/colors';
 import { styles } from '../../../../../src/theme/styles';
-import { sp } from '../../../../../dimensions';
+import { sp } from '../../../../../src/dimensions';
 import { Feather } from '@expo/vector-icons';
 
 export default function Task(){

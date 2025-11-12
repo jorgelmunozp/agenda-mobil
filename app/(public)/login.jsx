@@ -1,69 +1,100 @@
-import { useContext, useState } from 'react';
-import { ScrollView, View, Text, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from '../../src/services/auth/authContext';
-import { types } from '../../src/types/types';
-import { api } from '../../src/services/api/api';
 import { router } from 'expo-router';
-import { Title } from '../../src/components/title/Title';
-import { Label } from '../../src/components/label/Label';
-import { Input } from '../../src/components/input/Input';
+import { useContext, useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
+import { AppAlert } from '../../src/components/alert/AppAlert';
 import { Button } from '../../src/components/button/Button';
-import { sp, fs } from '../../dimensions';
+import { Input } from '../../src/components/input/Input';
+import { Label } from '../../src/components/label/Label';
+import { Title } from '../../src/components/title/Title';
+import { fs, sp } from '../../src/dimensions';
+import { api } from '../../src/services/api/api';
+import { AuthContext } from '../../src/services/auth/authContext';
 import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
+import { types } from '../../src/types/types';
 
-export default function Login(){
+// Convierte error backend a lista (bullets) como SweetAlert
+const errorLines = (e) => {
+  const data = e?.response?.data;
+  if (Array.isArray(data?.error?.message)) return data.error.message.filter(Boolean);
+  const candidates = [data?.error?.message, data?.message, data?.detail, e?.message].filter((s) => typeof s === 'string' && s.trim());
+  const first = candidates[0] || '';
+  return first
+    .split('\n')
+    .map((t) => t.trim())
+    .filter(Boolean);
+};
+
+export default function Login() {
   const { dispatch } = useContext(AuthContext);
-  const [username,setUsername] = useState('');
-  const [password,setPassword] = useState('');
-  const [loading,setLoading] = useState(false);
-  const [err,setErr] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const [alert, setAlert] = useState({ visible: false, title: '', message: '', buttons: [], type: 'info' });
+  const show = (title, message, buttons, type = 'info') => setAlert({ visible: true, title, message, buttons: buttons?.length ? buttons : [{ text: 'Aceptar' }], type });
+  const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const handleLogin = async () => {
-    setErr('');
+    // Validación local -> bullets
+    const missing = [];
+    if (missing.length) {
+      show('Faltan Datos', missing, undefined, 'error');
+      return;
+    }
+
     setLoading(true);
     try {
       const r = await api.post('/auth/login', { username, password });
       const d = r?.data ?? {};
       if (d?.token) await AsyncStorage.setItem('token', String(d.token));
-      if (d?.id)    await AsyncStorage.setItem('userId', String(d.id));
+      if (d?.id) await AsyncStorage.setItem('userId', String(d.id));
       dispatch({ type: types.login, payload: d?.user ?? { name: username } });
-      router.replace({ pathname: '/(app)/home', params: { userId: String(d.id) } });
+
+      const successMsg = d?.message || 'Inicio de sesión exitoso';
+      show('Bienvenido', successMsg, [{ text: 'Ir al Home', onPress: () => router.replace({ pathname: '/(app)/home', params: { userId: String(d.id) } }) }], 'success');
     } catch (e) {
-      setErr(String(e?.response?.data?.message || e?.response?.data?.error?.message || e?.message || 'No se pudo iniciar sesión'));
+      const lines = errorLines(e);
+      show('Faltan Datos', lines.length ? lines : ['No se pudo iniciar sesión'], undefined, 'error');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <ScrollView style={styles.box} contentContainerStyle={{alignItems:'center', paddingVertical:sp(styles.gapXL)}}>
-      <View style={styles.container}>
-        <Title>INICIAR SESION</Title>
-        <Label>Ingresa tu usuario</Label>
-        <Input value={username} onChangeText={setUsername} isIcon={true} icon="person-circle-outline" keyboardType="email-address" autoCapitalize="none" />
+    <>
+      <ScrollView style={styles.box} contentContainerStyle={{ alignItems: 'center', paddingVertical: sp(styles.gapXL) }}>
+        <View style={styles.container}>
+          <Title>INICIAR SESION</Title>
 
-        <Label>Ingresa tu contraseña</Label>
-        <Input value={password} onChangeText={setPassword} secureTextEntry isIcon={true} icon="lock-closed-outline" autoCapitalize="none" />
+          <Label>Ingresa tu usuario</Label>
+          <Input value={username} onChangeText={setUsername} isIcon={true} icon="person-circle-outline" keyboardType="email-address" autoCapitalize="none" />
 
-        <Button label='Ingresar' fallbackLabel='Cargando...' onPress={handleLogin} disabled={loading} />
-        <Button label='Registrarse' fallbackLabel='Registrando...' onPress={()=>router.push('/(public)/register')} />
+          <Label>Ingresa tu contraseña</Label>
+          <Input value={password} onChangeText={setPassword} secureTextEntry isIcon={true} icon="lock-closed-outline" autoCapitalize="none" />
 
-        {/* ¿Olvidaste tu contraseña? — borde rojo fino + padding vertical (como Register) */}
-        <Pressable
-          onPress={()=>router.push('/(public)/recover')}
-          style={{backgroundColor:'#d00000', borderRadius:sp(styles.radius+2), padding:sp(1), marginTop:sp(12)}}
-        >
-          <View style={{backgroundColor:colors.black, height:sp(styles.btnH), borderRadius:sp(styles.radius+2), alignItems:'center', justifyContent:'center'}}>
-            <Text style={{color:colors.white, fontSize:fs(16), fontWeight:'800'}}>
-              ¿Olvidaste tu contraseña?
-            </Text>
+          <View style={styles.actions}>
+            <Button label="Ingresar" fallbackLabel="Cargando..." onPress={handleLogin} disabled={loading} />
+            <Button label="Registrarse" fallbackLabel="Registrando..." onPress={() => router.push('/(public)/register')} />
+            <Pressable onPress={() => router.push('/(public)/recover')} style={{ backgroundColor: '#d00000', borderRadius: sp(styles.radius + 2), padding: sp(1), marginTop: sp(12) }}>
+              <View style={{ backgroundColor: colors.black, height: sp(styles.btnH), borderRadius: sp(styles.radius + 2), alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ color: colors.white, fontSize: fs(16), fontWeight: '800' }}>¿Olvidaste tu contraseña?</Text>
+              </View>
+            </Pressable>
           </View>
-        </Pressable>
+        </View>
+      </ScrollView>
 
-        {!!err && <Text style={{color:colors.white, textAlign:'center', marginTop:sp(10), fontSize:fs(14)}}>{err}</Text>}
-      </View>
-    </ScrollView>
+      <AppAlert
+        visible={alert.visible}
+        title={alert.title}
+        message={alert.message}
+        buttons={alert.buttons}
+        type={alert.type}
+        btnColor={colors.black}
+        onClose={hide}
+      />
+    </>
   );
 }

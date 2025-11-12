@@ -5,7 +5,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 module.exports = {
   expo: {
     name: "OrganizeU",
-    slug: "organizeu-r8",
+    slug: "organizeu",
     scheme: "organizeu",
     plugins: ["expo-router","expo-font"],
     experiments: { typedRoutes: false },

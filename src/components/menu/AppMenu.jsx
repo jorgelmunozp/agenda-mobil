@@ -29,16 +29,17 @@ export const AppMenu = () => {
 
   // Hidratar userId de AsyncStorage
   useEffect(() => {
-    let alive = true;
+    let mounted = true;
     (async () => {
       try {
-        const id = await AsyncStorage.getItem('userId');
-        if (alive) setUserId(id);
+        const v = await AsyncStorage.getItem('userId'); // misma clave con la que lo guardaste
+        if (mounted) setUserId(v ?? '');
       } catch {}
     })();
-    return () => { alive = false; };
+    return () => { mounted = false; };
   }, []);
 
+  //Animación del menú
   useEffect(() => {
     if (open) {
       if (!mounted) setMounted(true);
@@ -75,7 +76,7 @@ export const AppMenu = () => {
     return href ? <Link href={href} asChild>{content}</Link> : content;
   };
 
-  // Construye el href sólo si tenemos userId
+  // Construye el href sólo si existe userId
   const homeHref = userId ? `/(app)/home?userId=${encodeURIComponent(userId)}` : '/(app)/home';
 
   return (

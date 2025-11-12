@@ -1,7 +1,7 @@
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import { Title } from '../../src/components/title/Title';
 import { Label } from '../../src/components/label/Label';
-import { sp } from '../../dimensions';
+import { sp } from '../../src/dimensions';
 import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
 
