@@ -1,35 +1,37 @@
-import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { api } from '../../../src/services/api/api';
+import { useState } from 'react';
 import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../../../src/theme/colors';
 import { DateInput } from '../../../src/components/input/DateInput';
 import { Input } from '../../../src/components/input/Input';
 import { TimeInput } from '../../../src/components/input/TimeInput';
+import { api } from '../../../src/services/api/api';
+import { colors } from '../../../src/theme/colors';
 
-const handleNewTask = async (userId, item, setModal) => {
+const handleNewTask = async (userId, item, setModal, setItem, onSaved) => {
   if (!item.name || !item.date || !item.time) return;
 
-  // Añadir token dinámicamente
-  api.interceptors.request.use(
-    async (config) => {
-      const token = await AsyncStorage.getItem('token');
-      if (token) config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    },
-    (error) => Promise.reject(error),
-  );
-  const response = await api.post(`/users/${userId}/tasks`, item);
-  const data = response?.data || {};
+  try {
+    const token = await AsyncStorage.getItem('token');
+    const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
-  console.log('Created task:', data);
+    const response = await api.post(`/users/${userId}/tasks`, item, { headers });
+    const data = response?.data || {};
+    console.log('Created task:', data);
 
-  // Limpiar el formulario
-  // setItem({ name: '', date: '', time: '', message: '' });
-  setModal(false);
+    // Refrescar lista en Home
+    if (typeof onSaved === 'function') {
+      await onSaved();
+    }
+
+    // Limpiar formulario y cerrar modal
+    setItem({ name: '', date: '', time: '', message: '' });
+    setModal(false);
+  } catch (e) {
+    console.log('create task', e?.message);
+  }
 };
 
-export const AddTask = ({ userId, visible, setModal, onClose }) => {
+export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
   const [item, setItem] = useState({ name: '', date: '', time: '', message: '' });
   const handleChange = (k, v) => setItem((prev) => ({ ...prev, [k]: v }));
 
@@ -59,7 +61,7 @@ export const AddTask = ({ userId, visible, setModal, onClose }) => {
           </View>
 
           <View style={s.modalActions}>
-            <Pressable onPress={() => handleNewTask(userId, item, setModal)} style={s.primaryBtn}>
+            <Pressable onPress={() => handleNewTask(userId, item, setModal, setItem, onSaved)} style={s.primaryBtn}>
               <Text style={s.primaryText}>Guardar</Text>
             </Pressable>
           </View>
@@ -71,7 +73,15 @@ export const AddTask = ({ userId, visible, setModal, onClose }) => {
 
 const s = StyleSheet.create({
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)', justifyContent: 'center', padding: 20 },
-  modal: { backgroundColor: colors.bg, borderRadius: 16, padding: 16, width: '90%', maxWidth: 900, alignSelf: 'center', ...Platform.select({ web: { outlineStyle: 'none' } }) },
+  modal: {
+    backgroundColor: colors.bg,
+    borderRadius: 16,
+    padding: 16,
+    width: '90%',
+    maxWidth: 900,
+    alignSelf: 'center',
+    ...Platform.select({ web: { outlineStyle: 'none' } }),
+  },
   label: { color: '#0f172a', fontWeight: '600', marginTop: 6, fontSize: 12 },
   field: { width: '100%', alignSelf: 'stretch', marginBottom: 14 },
   inputFull: { width: '100%' },
