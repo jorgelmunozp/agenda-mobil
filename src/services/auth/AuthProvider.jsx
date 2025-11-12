@@ -4,7 +4,7 @@ import { AuthContext } from './authContext';
 import { authReducer } from './authReducer';
 import { types } from '../../types/types';
 
-const initialState = { logged: false, user: null, restored: false };
+const initialState = { id: null, user: null, logged: false, restored: false };
 
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -28,7 +28,7 @@ export function AuthProvider({ children }) {
     (async () => {
       try {
         if (state?.logged) {
-          await AsyncStorage.setItem('user', JSON.stringify({logged:state.logged, user:state.user.name, restored:state.restored}));
+          await AsyncStorage.setItem('user', JSON.stringify({ id: state.user.id, user: state.user.name, logged: state.logged, restored: state.restored }));
         } else {
           await AsyncStorage.removeItem('user');
         }
@@ -36,9 +36,5 @@ export function AuthProvider({ children }) {
     })();
   }, [state?.logged, state?.user]);
 
-  return (
-    <AuthContext.Provider value={{ user: state.user, logged: state.logged, restored: state.restored, dispatch }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ id: state.id, user: state.user, logged: state.logged, restored: state.restored, dispatch }}>{children}</AuthContext.Provider>;
 }

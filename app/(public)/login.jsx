@@ -13,18 +13,7 @@ import { AuthContext } from '../../src/services/auth/authContext';
 import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
 import { types } from '../../src/types/types';
-
-// Convierte error backend a lista (bullets) como SweetAlert
-const errorLines = (e) => {
-  const data = e?.response?.data;
-  if (Array.isArray(data?.error?.message)) return data.error.message.filter(Boolean);
-  const candidates = [data?.error?.message, data?.message, data?.detail, e?.message].filter((s) => typeof s === 'string' && s.trim());
-  const first = candidates[0] || '';
-  return first
-    .split('\n')
-    .map((t) => t.trim())
-    .filter(Boolean);
-};
+import { errorLines } from '../../src/helpers/errorLines';
 
 export default function Login() {
   const { dispatch } = useContext(AuthContext);
@@ -37,8 +26,10 @@ export default function Login() {
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const handleLogin = async () => {
-    // Validación local -> bullets
+    // Validación local
     const missing = [];
+    if (!username) missing.push('El usuario es obligatorio');
+    if (!password) missing.push('La contraseña es obligatoria');
     if (missing.length) {
       show('Faltan Datos', missing, undefined, 'error');
       return;
@@ -46,14 +37,13 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const r = await api.post('/auth/login', { username, password });
-      const d = r?.data ?? {};
-      if (d?.token) await AsyncStorage.setItem('token', String(d.token));
-      if (d?.id) await AsyncStorage.setItem('userId', String(d.id));
-      dispatch({ type: types.login, payload: d?.user ?? { name: username } });
+      const response = await api.post('/auth/login', { username, password });
+      const data = response?.data ?? {};
+      if (data?.token) await AsyncStorage.setItem('token', String(data.token));
+      dispatch({ type: types.login, payload: { id: String(data?.id), name: username } });
 
-      const successMsg = d?.message || 'Inicio de sesión exitoso';
-      show('Bienvenido', successMsg, [{ text: 'Ir al Home', onPress: () => router.replace({ pathname: '/(app)/home', params: { userId: String(d.id) } }) }], 'success');
+      // const successMsg = data?.message || 'Inicio de sesión exitoso';
+      // show('Bienvenido', successMsg, [{ text: 'Ir al Home', onPress: () => router.replace({ pathname: '/(app)/home', params: { userId: String(data.id) } }) }], 'success');
     } catch (e) {
       const lines = errorLines(e);
       show('Faltan Datos', lines.length ? lines : ['No se pudo iniciar sesión'], undefined, 'error');

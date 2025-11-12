@@ -10,17 +10,7 @@ import { sp } from '../../src/dimensions';
 import { api } from '../../src/services/api/api';
 import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
-
-// Si viene array -> bullets; si viene string -> línea única
-const errorLines = (e) => {
-  const data = e?.response?.data;
-  if (Array.isArray(data?.error?.message)) return data.error.message.filter(Boolean);
-  const msg = data?.error?.message || data?.message || data?.detail || e?.message || 'Ocurrió un error';
-  return String(msg)
-    .split('\n')
-    .map((t) => t.trim())
-    .filter(Boolean);
-};
+import { errorLines } from '../../src/helpers/errorLines';
 
 export default function Recover() {
   const [email, setEmail] = useState('');
@@ -45,19 +35,18 @@ export default function Recover() {
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const submit = async () => {
-    // if (!email) {
-    //   show('Recuperar contraseña', 'El correo es obligatorio', undefined, 'error');
-    //   return;
-    // }
+    // Validación local
+    if (!email) {
+      show('Recuperar contraseña', 'El correo es obligatorio', undefined, 'error');
+      return;
+    }
+
     try {
       setLoading(true);
-      const res = await api.post('/password/recover', { email });
-
-      // Éxito: usa el message del backend
-      const successMsg = res?.data?.message || 'Te enviamos el enlace de recuperación a tu correo.';
+      const response = await api.post('/password/recover', { email });
+      const successMsg = response?.data?.message || 'Te enviamos el enlace de recuperación a tu correo.';
       show('Listo', successMsg, [{ text: 'Ir al Login', onPress: () => router.replace('/(public)/login') }], 'success');
     } catch (e) {
-      // Error: convierte a bullets si es array (mismo comportamiento que SweetAlert)
       const lines = errorLines(e);
       show('Faltan Datos', lines.length ? lines : 'No se pudo enviar el correo de recuperación', undefined, 'error');
     } finally {

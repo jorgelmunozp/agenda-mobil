@@ -1,25 +1,29 @@
-import { Slot, Redirect } from 'expo-router';
-import { useContext } from 'react';
+import { Slot, useRouter } from 'expo-router';
+import { useContext, useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { AuthContext } from '../../src/services/auth/authContext';
 
 export default function PrivateLayout() {
   const { logged, restored } = useContext(AuthContext);
+  const router = useRouter();
 
-  // Espera a restaurar el estado (evita parpadeos)
+  // Redirección inmediata cuando ya se restauró y NO hay sesión
+  useEffect(() => {
+    if (!restored) return;
+    if (!logged) router.replace('/(public)/login');
+  }, [restored, logged, router]);
+
+  // Evita parpadeos mientras se restaura
   if (!restored) {
     return (
-      <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#5c3b99'}}>
+      <View style={{ flex:1, alignItems:'center', justifyContent:'center', backgroundColor:'#5c3b99' }}>
         <ActivityIndicator size="large" color="#fff" />
       </View>
     );
   }
 
-  // Si no está logueado => fuera
-  if (!logged) {
-    return <Redirect href="/(public)/login" />;
-  }
+  // Mientras hace el replace, no muestres las pantallas privadas
+  if (!logged) return null;
 
-  // Autenticado => carga la pantalla de /(app)
-    return ( <Slot/> );
+  return <Slot />;
 }

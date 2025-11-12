@@ -8,28 +8,12 @@ import { Input } from '../../src/components/input/Input';
 import { Label } from '../../src/components/label/Label';
 import { Title } from '../../src/components/title/Title';
 import { sp } from '../../src/dimensions';
+import { errorLines } from '../../src/helpers/errorLines';
 import { api } from '../../src/services/api/api';
 import { AuthContext } from '../../src/services/auth/authContext';
 import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
 import { types } from '../../src/types/types';
-
-// Convierte errores del backend a lista (bullets) o líneas
-const errorLines = (e) => {
-  const data = e?.response?.data;
-
-  // Si viene como array (p.ej. validaciones)
-  if (Array.isArray(data?.error?.message)) return data.error.message.filter(Boolean);
-  if (Array.isArray(data?.message)) return data.message.filter(Boolean);
-  if (Array.isArray(data?.errors)) return data.errors.map((x) => (typeof x === 'string' ? x : x?.message || JSON.stringify(x))).filter(Boolean);
-
-  // String: usa el mensaje más informativo y separa por líneas
-  const msg = data?.error?.message || data?.message || data?.detail || e?.message || 'No se pudo registrar';
-  return String(msg)
-    .split('\n')
-    .map((t) => t.trim())
-    .filter(Boolean);
-};
 
 export default function Register() {
   const { dispatch } = useContext(AuthContext);
@@ -44,11 +28,12 @@ export default function Register() {
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const handleRegister = async () => {
+    // Validación local
     const missing = [];
-    // if (!name) missing.push('El nombre es obligatorio');
-    // if (!email) missing.push('El correo es obligatorio');
-    // if (!username) missing.push('El usuario es obligatorio');
-    // if (!password) missing.push('La contraseña es obligatoria');
+    if (!name) missing.push('El nombre es obligatorio');
+    if (!email) missing.push('El correo es obligatorio');
+    if (!username) missing.push('El usuario es obligatorio');
+    if (!password) missing.push('La contraseña es obligatoria');
     if (missing.length) {
       show('Faltan Datos', missing, undefined, 'error');
       return;
@@ -56,14 +41,13 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const r = await api.post('/users', { username, password, name, email });
-      const d = r?.data || {};
-      if (d?.token) await AsyncStorage.setItem('token', String(d.token));
-      if (d?.id) await AsyncStorage.setItem('userId', String(d.id));
-      dispatch({ type: types.login, payload: d?.user || { name: username } });
+      const response = await api.post('/users', { username, password, name, email });
+      const data = response?.data || {};
+      if (data?.token) await AsyncStorage.setItem('token', String(data.token));
+      dispatch({ type: types.login, payload: { id: String(data?.id), name: username } });
 
-      const successMsg = d?.message || 'Registro exitoso';
-      show('Cuenta creada', successMsg, [{ text: 'Ir al Home', onPress: () => router.replace({ pathname: '/(app)/home', params: { userId: String(d.id) } }) }], 'success');
+      // const successMsg = data?.message || 'Registro exitoso';
+      // show('Cuenta creada', successMsg, [{ text: 'Ir al Home', onPress: () => router.replace({ pathname: '/(app)/home', params: { userId: String(data.id) } }) }], 'success');
     } catch (e) {
       const lines = errorLines(e);
       show('Faltan Datos', lines.length ? lines : ['No se pudo registrar'], undefined, 'error');
@@ -97,15 +81,7 @@ export default function Register() {
         </View>
       </ScrollView>
 
-      <AppAlert
-        visible={alert.visible}
-        title={alert.title}
-        message={alert.message} // string o array -> bullets si es array
-        buttons={alert.buttons}
-        type={alert.type} // 'error' | 'success' | 'info'
-        btnColor={colors.black} // botón oscuro, ancho completo
-        onClose={hide}
-      />
+      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hide} />
     </>
   );
 }

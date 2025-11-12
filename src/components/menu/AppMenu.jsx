@@ -10,12 +10,11 @@ import { useMenu } from '../../hooks/useMenu';
 
 const WIDTH = 260;
 const DURATION = 360;
-const HEADER_HEIGHT = 94; // <- alto del Header
+const HEADER_HEIGHT = 94;           // Alto del Header
 
 export const AppMenu = () => {
   const { open, closeMenu } = useMenu();
-  const { dispatch } = useContext(AuthContext);
-  const [userId, setUserId] = useState(null);              // <- estado para userId (sin await arriba)
+  const { user, dispatch } = useContext(AuthContext);
 
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -26,18 +25,6 @@ export const AppMenu = () => {
   const tx = useRef(new Animated.Value(-WIDTH)).current;
   const fade = useRef(new Animated.Value(0)).current;
   const [mounted, setMounted] = useState(false);
-
-  // Hidratar userId de AsyncStorage
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const v = await AsyncStorage.getItem('userId'); // misma clave con la que lo guardaste
-        if (mounted) setUserId(v ?? '');
-      } catch {}
-    })();
-    return () => { mounted = false; };
-  }, []);
 
   //Animación del menú
   useEffect(() => {
@@ -77,7 +64,7 @@ export const AppMenu = () => {
   };
 
   // Construye el href sólo si existe userId
-  const homeHref = userId ? `/(app)/home?userId=${encodeURIComponent(userId)}` : '/(app)/home';
+  const homeHref = `/(app)/home?userId=${encodeURIComponent(user?.id)}`;
 
   return (
     <View style={{ position:'absolute', left:0, right:0, bottom:0, top:MENU_TOP, zIndex:9999 }}>

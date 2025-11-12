@@ -1,4 +1,3 @@
-// app/_layout.jsx
 import { Stack } from 'expo-router';
 import { AuthProvider } from '../src/services/auth/AuthProvider';
 import { Header } from '../src/components/header/Header';

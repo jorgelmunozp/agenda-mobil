@@ -13,7 +13,7 @@ export const TimeInput = ({ value, onChange, placeholder = '-- : --  -----', sty
         `,
           }}
         />
-        <input class="time-native" type="time" value={value || ''} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} {...props} style={{ width: '100%', height: 44, borderRadius: 10, border: '1px solid #E5E7EB', padding: '0 12px', backgroundColor: '#FFF', boxSizing: 'border-box', outline: 'none' }} />
+        <input className="time-native" type="time" value={value || ''} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} {...props} style={{ width: '100%', height: 44, borderRadius: 10, border: '1px solid #E5E7EB', padding: '0 12px', backgroundColor: '#FFF', boxSizing: 'border-box', outline: 'none' }} />
       </View>
     );
   }

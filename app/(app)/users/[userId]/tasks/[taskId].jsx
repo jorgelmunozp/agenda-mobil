@@ -31,14 +31,14 @@ export default function Task(){
           <View style={{display:'flex', backgroundColor:'#28053f', borderRadius:sp(12), paddingHorizontal:sp(8), paddingBottom:sp(8)}}>
             <Text style={[s.h, { color:colors.white, paddingVertical:sp(1) }]}>{'Fecha de entrega:'}</Text>
             <View style={{display:'flex', flexDirection:"row", backgroundColor:'#28053f', borderRadius:sp(12)}}>
-              <Text style={[s.h, { backgroundColor:colors.lightgray, borderRadius:sp(8) }]}>{task?.date || 'Fecha'}</Text>
-              <Text style={[s.h, { backgroundColor:colors.lightgray, borderRadius:sp(8), marginLeft:sp(12) }]}>{task?.time || 'Hora'}</Text>
+              <Text style={[s.h, { backgroundColor:colors.lightgray, borderRadius:sp(8) }]}>{task?.date || ''}</Text>
+              <Text style={[s.h, { backgroundColor:colors.lightgray, borderRadius:sp(8), marginLeft:sp(12) }]}>{task?.time || ''}</Text>
             </View>
           </View>
         </View>
 
-        <Title>{task?.name || 'Tarea'}</Title>
-        <Text style={[s.h, {color:colors.white, fontSize:sp(32), fontStyle:'italic' }]}>{task?.message || 'Mensaje'}</Text>
+        <Title>{task?.name || ''}</Title>
+        <Text style={[s.h, {color:colors.white, fontSize:sp(32), fontStyle:'italic' }]}>{task?.message || ''}</Text>
 
         <Button label='Regresar' fallbackLabel='Regresando...' onPress={() => router.replace({ pathname: '/(app)/home', params: { userId: userId } })} />
       </View>

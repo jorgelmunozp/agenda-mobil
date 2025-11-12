@@ -31,7 +31,7 @@ export const DateInput = ({ value, onChange, placeholder = 'dd/mm/aaaa', style, 
         `,
           }}
         />
-        <input class="date-native" type="date" value={toIso(value)} onChange={(e) => onChange(fromIso(e.target.value))} placeholder={placeholder} {...props} style={{ width: '100%', height: 44, borderRadius: 10, border: '1px solid #E5E7EB', padding: '0 12px', backgroundColor: '#FFF', boxSizing: 'border-box', outline: 'none' }} />
+        <input className="date-native" type="date" value={toIso(value)} onChange={(e) => onChange(fromIso(e.target.value))} placeholder={placeholder} {...props} style={{ width: '100%', height: 44, borderRadius: 10, border: '1px solid #E5E7EB', padding: '0 12px', backgroundColor: '#FFF', boxSizing: 'border-box', outline: 'none' }} />
       </View>
     );
   }
