@@ -12,6 +12,7 @@ import { api } from '../../../src/services/api/api';
 import { colors } from '../../../src/theme/colors';
 import { styles } from '../../../src/theme/styles';
 import { Feather } from '@expo/vector-icons';
+import { Pagination } from '../../../src/components/pagination/Pagination';
 
 export default function Home() {
   const { userId } = useLocalSearchParams();
@@ -108,27 +109,15 @@ export default function Home() {
 
           <TaskList data={filteredTasks} renderItem={({ item }) => <TaskItem item={item} />} keyExtractor={(it, i) => String(it?.id ?? it?._id ?? it?.taskId ?? i)} ListEmptyComponent={null} contentContainerStyle={{ paddingBottom: 12 }} scrollEnabled={false} />
 
-          {/* Paginación */}
-          <View style={s.pagination}>
-            <Pressable onPress={handlePrevPage} disabled={pagination.page === 1} style={[s.pageBtn, pagination.page === 1 && s.pageBtnDisabled]}>
-              <Text style={s.pageBtnText}>← Anterior</Text>
-            </Pressable>
-
-            <Text style={s.pageInfo}>
-              Página {pagination.page} de {pagination.last_page}
-            </Text>
-
-            <Pressable onPress={handleNextPage} disabled={pagination.page === pagination.last_page} style={[s.pageBtn, pagination.page === pagination.last_page && s.pageBtnDisabled]}>
-              <Text style={s.pageBtnText}>Siguiente →</Text>
-            </Pressable>
-          </View>
+          {/* Paginación extraída a componente aparte */}
+          <Pagination page={pagination.page} lastPage={pagination.last_page} onPrev={handlePrevPage} onNext={handleNextPage} />
 
           <AddTask
             userId={userId}
             visible={modal}
             setModal={setModal}
             onClose={closeAddTask}
-            onSaved={fetchTasks} // cuando se guarda, recargo la lista
+            onSaved={fetchTasks} // recarga la página actual al guardar tarea
           />
         </View>
       </ScrollView>
@@ -148,31 +137,5 @@ const s = StyleSheet.create({
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-
-  pagination: {
-    marginTop: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    columnGap: 8,
-  },
-  pageBtn: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 8,
-    backgroundColor: colors.black,
-  },
-  pageBtnDisabled: {
-    opacity: 0.4,
-  },
-  pageBtnText: {
-    color: colors.white,
-    fontWeight: '600',
-    fontSize: 12,
-  },
-  pageInfo: {
-    color: colors.text,
-    fontSize: 12,
   },
 });
