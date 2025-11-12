@@ -41,9 +41,6 @@ export default function Login() {
       const data = response?.data ?? {};
       if (data?.token) await AsyncStorage.setItem('token', String(data.token));
       dispatch({ type: types.login, payload: { id: String(data?.id), name: username } });
-
-      // const successMsg = data?.message || 'Inicio de sesión exitoso';
-      // show('Bienvenido', successMsg, [{ text: 'Ir al Home', onPress: () => router.replace({ pathname: '/(app)/home', params: { userId: String(data.id) } }) }], 'success');
     } catch (e) {
       const lines = errorLines(e);
       show('Faltan Datos', lines.length ? lines : ['No se pudo iniciar sesión'], undefined, 'error');
@@ -67,7 +64,7 @@ export default function Login() {
           <View style={styles.actions}>
             <Button label="Ingresar" fallbackLabel="Cargando..." onPress={handleLogin} disabled={loading} />
             <Button label="Registrarse" fallbackLabel="Registrando..." onPress={() => router.push('/(public)/register')} />
-            <Pressable onPress={() => router.push('/(public)/recover')} style={{ backgroundColor: '#d00000', borderRadius: sp(styles.radius + 2), padding: sp(1), marginTop: sp(12) }}>
+            <Pressable onPress={() => router.push('/(public)/password-recover')} style={{ backgroundColor: '#d00000', borderRadius: sp(styles.radius + 2), padding: sp(1), marginTop: sp(12) }}>
               <View style={{ backgroundColor: colors.black, height: sp(styles.btnH), borderRadius: sp(styles.radius + 2), alignItems: 'center', justifyContent: 'center' }}>
                 <Text style={{ color: colors.white, fontSize: fs(16), fontWeight: '800' }}>¿Olvidaste tu contraseña?</Text>
               </View>

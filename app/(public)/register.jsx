@@ -45,9 +45,6 @@ export default function Register() {
       const data = response?.data || {};
       if (data?.token) await AsyncStorage.setItem('token', String(data.token));
       dispatch({ type: types.login, payload: { id: String(data?.id), name: username } });
-
-      // const successMsg = data?.message || 'Registro exitoso';
-      // show('Cuenta creada', successMsg, [{ text: 'Ir al Home', onPress: () => router.replace({ pathname: '/(app)/home', params: { userId: String(data.id) } }) }], 'success');
     } catch (e) {
       const lines = errorLines(e);
       show('Faltan Datos', lines.length ? lines : ['No se pudo registrar'], undefined, 'error');

@@ -12,7 +12,7 @@ import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
 import { errorLines } from '../../src/helpers/errorLines';
 
-export default function Recover() {
+export default function PasswordRecover() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,7 @@ export default function Recover() {
     });
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
-  const submit = async () => {
+  const sendEmail = async () => {
     // Validación local
     if (!email) {
       show('Recuperar contraseña', 'El correo es obligatorio', undefined, 'error');
@@ -43,7 +43,7 @@ export default function Recover() {
 
     try {
       setLoading(true);
-      const response = await api.post('/password/recover', { email });
+      const response = await api.post('/password/recover', { email }, { headers: { 'x-client': 'mobile' } });
       const successMsg = response?.data?.message || 'Te enviamos el enlace de recuperación a tu correo.';
       show('Listo', successMsg, [{ text: 'Ir al Login', onPress: () => router.replace('/(public)/login') }], 'success');
     } catch (e) {
@@ -64,7 +64,7 @@ export default function Recover() {
           <Input value={email} onChangeText={setEmail} isIcon={true} icon="at" keyboardType="email-address" autoCapitalize="none" />
 
           <View style={styles.actions}>
-            <Button label="Enviar enlace" fallbackLabel="Enviando..." onPress={submit} disabled={loading} />
+            <Button label="Enviar enlace" fallbackLabel="Enviando..." onPress={sendEmail} disabled={loading} />
             <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={() => router.push('/(public)/login')} />
           </View>
         </View>
