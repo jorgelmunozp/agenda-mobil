@@ -73,7 +73,7 @@ export default function Home(){
           <TaskList data={filteredTasks} renderItem={({ item }) => <TaskItem item={item} />} keyExtractor={(it, i) => String(it?.id ?? it?._id ?? it?.taskId ?? i)} ListEmptyComponent={null} contentContainerStyle={{ paddingBottom: 12 }} scrollEnabled={false} />
 
           {/* Modal extraído */}
-          <AddTask userId={userId} visible={modal} onClose={closeAddTask} />
+          <AddTask userId={userId} visible={modal} setModal={setModal} onClose={closeAddTask} />
         </View>
       </ScrollView>
 

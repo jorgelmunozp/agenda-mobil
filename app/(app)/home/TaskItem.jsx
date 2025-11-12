@@ -9,7 +9,6 @@ const openTask = (userId,taskId) => {
 
 export const TaskItem = ({ item }) => {
   const { userId } = useLocalSearchParams();
-  console.log('Rendering TaskItem for userId:', userId, 'and item:', item);
 
   const taskId = item?.id.trim() ?? 'id';
   const title = item?.task?.name.trim() ?? 'Tarea';

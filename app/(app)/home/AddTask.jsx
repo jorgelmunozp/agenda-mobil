@@ -7,18 +7,13 @@ import { DateInput } from '../../../src/components/input/DateInput';
 import { Input } from '../../../src/components/input/Input';
 import { TimeInput } from '../../../src/components/input/TimeInput';
 
-const handleNewTask = async (userId,item) => {
+const handleNewTask = async (userId, item, setModal) => {
   if (!item.name || !item.date || !item.time) return;
-
-  console.log('Creating task for userId:', userId, 'with item:', item);
-  // const token = await AsyncStorage.getItem('token');
-  // const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-  // const response = await api.get(`/users/${userId}/tasks`, { headers });
 
   // Añadir token dinámicamente
   api.interceptors.request.use(
-    (config) => {
-      const token = sessionStorage.getItem('token');
+    async (config) => {
+      const token = await AsyncStorage.getItem('token');
       if (token) config.headers.Authorization = `Bearer ${token}`;
       return config;
     },
@@ -30,11 +25,11 @@ const handleNewTask = async (userId,item) => {
   console.log('Created task:', data);
 
   // Limpiar el formulario
-  setItem({ name: '', date: '', time: '', message: '' });
+  // setItem({ name: '', date: '', time: '', message: '' });
   setModal(false);
 };
 
-export const AddTask = ({ userId, visible, onClose }) => {
+export const AddTask = ({ userId, visible, setModal, onClose }) => {
   const [item, setItem] = useState({ name: '', date: '', time: '', message: '' });
   const handleChange = (k, v) => setItem((prev) => ({ ...prev, [k]: v }));
 
@@ -64,7 +59,7 @@ export const AddTask = ({ userId, visible, onClose }) => {
           </View>
 
           <View style={s.modalActions}>
-            <Pressable onPress={() => handleNewTask(userId, item)} style={s.primaryBtn}>
+            <Pressable onPress={() => handleNewTask(userId, item, setModal)} style={s.primaryBtn}>
               <Text style={s.primaryText}>Guardar</Text>
             </Pressable>
           </View>
