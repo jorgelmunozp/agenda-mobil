@@ -8,12 +8,12 @@ import { Input } from '../../src/components/input/Input';
 import { Label } from '../../src/components/label/Label';
 import { Title } from '../../src/components/title/Title';
 import { fs, sp } from '../../src/dimensions';
+import { errorLines } from '../../src/helpers/errorLines';
 import { api } from '../../src/services/api/api';
 import { AuthContext } from '../../src/services/auth/authContext';
 import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
 import { types } from '../../src/types/types';
-import { errorLines } from '../../src/helpers/errorLines';
 
 const authEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_AUTH;
 
@@ -53,7 +53,7 @@ export default function Login() {
 
   return (
     <>
-      <ScrollView style={styles.box} contentContainerStyle={{ alignItems: 'center', paddingVertical: sp(styles.gapXL) }}>
+      <ScrollView style={styles.box} contentContainerStyle={styles.view} keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <Title>INICIAR SESION</Title>
 
@@ -75,15 +75,7 @@ export default function Login() {
         </View>
       </ScrollView>
 
-      <AppAlert
-        visible={alert.visible}
-        title={alert.title}
-        message={alert.message}
-        buttons={alert.buttons}
-        type={alert.type}
-        btnColor={colors.black}
-        onClose={hide}
-      />
+      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hide} />
     </>
   );
 }

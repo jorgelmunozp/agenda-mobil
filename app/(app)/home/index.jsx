@@ -87,6 +87,7 @@ export default function Home() {
     }
   };
 
+  // Loading state fallback
   if (loading) {
     return (
       <View style={[styles.box, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
@@ -98,7 +99,7 @@ export default function Home() {
 
   return (
     <>
-      <ScrollView style={styles.box} contentContainerStyle={{ alignItems: 'center', paddingVertical: sp(styles.gapXL) }}>
+      <ScrollView style={styles.box} contentContainerStyle={styles.view} keyboardShouldPersistTaps="handled">
         <View style={[styles.container, s.rel]}>
           <View>
             <Title>TAREAS</Title>

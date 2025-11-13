@@ -57,7 +57,7 @@ export default function Register() {
 
   return (
     <>
-      <ScrollView style={styles.box} contentContainerStyle={{ alignItems: 'center', paddingVertical: sp(styles.gapXL) }}>
+      <ScrollView style={styles.box} contentContainerStyle={styles.view} keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <Title>REGISTRARSE</Title>
 

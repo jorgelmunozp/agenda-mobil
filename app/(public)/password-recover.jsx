@@ -58,7 +58,7 @@ export default function PasswordRecover() {
 
   return (
     <>
-      <ScrollView style={styles.box} contentContainerStyle={{ alignItems: 'center', paddingVertical: sp(styles.gapXL) }}>
+      <ScrollView style={styles.box} contentContainerStyle={styles.view} keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <Title>RECUPERAR CONTRASEÑA</Title>
 
