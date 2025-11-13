@@ -4,37 +4,54 @@ import { AuthContext } from './authContext';
 import { authReducer } from './authReducer';
 import { types } from '../../types/types';
 
-const initialState = { id: null, user: null, logged: false, restored: false };
+const initialState = {
+  user: null,
+  logged: false,
+  restored: false,
+};
 
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Restaurar estado al arrancar (equivalente a init + sessionStorage)
+  // Restaurar estado al arrancar
   useEffect(() => {
     (async () => {
       try {
         const raw = await AsyncStorage.getItem('user');
+
         if (raw) {
-          const user = JSON.parse(raw);
-          dispatch({ type: types.login, payload: user });
+          const saved = JSON.parse(raw);
+          dispatch({
+            type: types.restore,
+            payload: { user: saved, logged: true },
+          });
+        } else {
+          dispatch({
+            type: types.restore,
+            payload: { user: null, logged: false },
+          });
         }
-      } catch {}
-      dispatch({ type: types.restore }); // marca que ya restauró
+      } catch {
+        dispatch({
+          type: types.restore,
+          payload: { user: null, logged: false },
+        });
+      }
     })();
   }, []);
 
-  // Persistir cambios (equivalente al useEffect con localStorage)
+  // Persistir cambios
   useEffect(() => {
     (async () => {
       try {
-        if (state?.logged) {
-          await AsyncStorage.setItem('user', JSON.stringify({ id: state.user.id, user: state.user.name, logged: state.logged, restored: state.restored }));
+        if (state.logged && state.user) {
+          await AsyncStorage.setItem('user', JSON.stringify(state.user));
         } else {
           await AsyncStorage.removeItem('user');
         }
       } catch {}
     })();
-  }, [state?.logged, state?.user]);
+  }, [state.logged, state.user]);
 
-  return <AuthContext.Provider value={{ id: state.id, user: state.user, logged: state.logged, restored: state.restored, dispatch }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ ...state, dispatch }}>{children}</AuthContext.Provider>;
 }
