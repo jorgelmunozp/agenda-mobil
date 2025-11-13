@@ -11,6 +11,8 @@ import { styles } from '../../../../../src/theme/styles';
 import { sp } from '../../../../../src/dimensions';
 import { Feather } from '@expo/vector-icons';
 
+const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
+
 export default function Task(){
   const { userId, taskId } = useLocalSearchParams();
   const [task,setTask]=useState({});
@@ -19,7 +21,7 @@ export default function Task(){
     try{ 
         const token = await AsyncStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-        const response = await api.get(`/users/${userId}/tasks/${taskId}`, { headers });
+        const response = await api.get(`${usersEndpoint}/${userId}/tasks/${taskId}`, { headers });
         setTask(response?.data?.task || {}); 
     } catch(e) { console.log('task', e?.message);} })(); },[userId,taskId]);
   

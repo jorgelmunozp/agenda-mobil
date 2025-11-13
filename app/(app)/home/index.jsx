@@ -14,6 +14,8 @@ import { styles } from '../../../src/theme/styles';
 import { Feather } from '@expo/vector-icons';
 import { Pagination } from '../../../src/components/pagination/Pagination';
 
+const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
+
 export default function Home() {
   const { userId } = useLocalSearchParams();
   const [openMenu, setOpenMenu] = useState(false);
@@ -37,7 +39,7 @@ export default function Home() {
       const token = await AsyncStorage.getItem('token');
       const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
-      const response = await api.get(`/users/${userId}/tasks?page=${pagination.page}&limit=${pagination.limit}`, { headers });
+      const response = await api.get(`${usersEndpoint}/${userId}/tasks?page=${pagination.page}&limit=${pagination.limit}`, { headers });
 
       const data = Array.isArray(response?.data?.data) ? response.data.data : [];
       setTasks(data);

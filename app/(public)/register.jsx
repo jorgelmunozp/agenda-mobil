@@ -15,6 +15,8 @@ import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
 import { types } from '../../src/types/types';
 
+const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
+
 export default function Register() {
   const { dispatch } = useContext(AuthContext);
   const [name, setName] = useState('');
@@ -41,7 +43,7 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const response = await api.post('/users', { username, password, name, email });
+      const response = await api.post(usersEndpoint, { username, password, name, email });
       const data = response?.data || {};
       if (data?.token) await AsyncStorage.setItem('token', String(data.token));
       dispatch({ type: types.login, payload: { id: String(data?.id), name: username } });

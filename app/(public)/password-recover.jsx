@@ -12,6 +12,8 @@ import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
 import { errorLines } from '../../src/helpers/errorLines';
 
+const passwordRecoverEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_RECOVER;
+
 export default function PasswordRecover() {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,7 +45,7 @@ export default function PasswordRecover() {
 
     try {
       setLoading(true);
-      const response = await api.post('/password/recover', { email }, { headers: { 'x-client': 'mobile' } });
+      const response = await api.post(passwordRecoverEndpoint, { email }, { headers: { 'x-client': 'mobile' } });
       const successMsg = response?.data?.message || 'Te enviamos el enlace de recuperación a tu correo.';
       show('Listo', successMsg, [{ text: 'Ir al Login', onPress: () => router.replace('/(public)/login') }], 'success');
     } catch (e) {

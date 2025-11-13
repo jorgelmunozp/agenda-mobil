@@ -7,6 +7,8 @@ import { TimeInput } from '../../../src/components/input/TimeInput';
 import { api } from '../../../src/services/api/api';
 import { colors } from '../../../src/theme/colors';
 
+const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
+
 const handleNewTask = async (userId, item, setModal, setItem, onSaved) => {
   if (!item.name || !item.date || !item.time) return;
 
@@ -14,7 +16,7 @@ const handleNewTask = async (userId, item, setModal, setItem, onSaved) => {
     const token = await AsyncStorage.getItem('token');
     const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
-    const response = await api.post(`/users/${userId}/tasks`, item, { headers });
+    const response = await api.post(`${usersEndpoint}/${userId}/tasks`, item, { headers });
     const data = response?.data || {};
     console.log('Created task:', data);
 

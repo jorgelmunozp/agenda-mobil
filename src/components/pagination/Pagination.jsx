@@ -31,7 +31,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8,
-    backgroundColor: colors.black,
+    backgroundColor: colors.button,
   },
   pageBtnDisabled: {
     opacity: 0.4,

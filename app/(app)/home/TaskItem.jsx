@@ -10,10 +10,10 @@ const openTask = (userId,taskId) => {
 export const TaskItem = ({ item }) => {
   const { userId } = useLocalSearchParams();
 
-  const taskId = item?.id.trim() ?? 'id';
-  const title = item?.task?.name.trim() ?? 'Tarea';
-  const date = item?.task?.date.trim() ?? 'fecha';
-  const time = item?.task?.time.trim() ?? 'hora';
+  const taskId = item?.id ?? 'id';
+  const title = item?.task?.name ?? 'Tarea';
+  const date = item?.task?.date ?? 'fecha';
+  const time = item?.task?.time ?? 'hora';
 
   return (
     <Pressable onPress={() => openTask(userId,taskId)} style={({ hovered, pressed }) => [s.card, hovered && s.cardHover, pressed && s.cardPressed]}>

@@ -15,6 +15,8 @@ import { styles } from '../../src/theme/styles';
 import { types } from '../../src/types/types';
 import { errorLines } from '../../src/helpers/errorLines';
 
+const authEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_AUTH;
+
 export default function Login() {
   const { dispatch } = useContext(AuthContext);
   const [username, setUsername] = useState('');
@@ -37,7 +39,7 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const response = await api.post('/auth/login', { username, password });
+      const response = await api.post(authEndpoint, { username, password });
       const data = response?.data ?? {};
       if (data?.token) await AsyncStorage.setItem('token', String(data.token));
       dispatch({ type: types.login, payload: { id: String(data?.id), name: username } });

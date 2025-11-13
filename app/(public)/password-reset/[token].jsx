@@ -12,6 +12,8 @@ import { api } from '../../../src/services/api/api';
 import { colors } from '../../../src/theme/colors';
 import { styles } from '../../../src/theme/styles';
 
+const passwordUpdateEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_UPDATE;
+
 export default function PasswordReset() {
   const { token } = useLocalSearchParams();
   const [password, setPassword] = useState('');
@@ -40,7 +42,7 @@ export default function PasswordReset() {
 
     setLoading(true);
     try {
-      const response = await api.patch('/password/update', { token, newPassword: password });
+      const response = await api.patch(passwordUpdateEndpoint, { token, newPassword: password });
       const msg = response?.data?.message || 'Contraseña actualizada correctamente';
 
       show(
