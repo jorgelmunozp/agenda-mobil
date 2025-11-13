@@ -4,13 +4,16 @@ import { Link, useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from '../../services/auth/authContext';
+import { sp } from '../../../src/dimensions';
 import { colors } from '../../theme/colors';
 import { Feather } from '@expo/vector-icons';
 import { useMenu } from '../../hooks/useMenu';
+import { styles } from '../../theme/styles';
 
-const WIDTH = 260;
+const WIDTH = 320;
 const DURATION = 360;
-const HEADER_HEIGHT = 94;           // Alto del Header
+const HEADER_HEIGHT = styles.header.height;      // Alto del Header
+const MENU_TOP = HEADER_HEIGHT;   // Menú arranca debajo del header (alto del header)
 
 export const AppMenu = () => {
   const { open, closeMenu } = useMenu();
@@ -18,9 +21,6 @@ export const AppMenu = () => {
 
   const router = useRouter();
   const insets = useSafeAreaInsets();
-
-  // Menú arranca debajo del header (safe-area + alto del header)
-  const MENU_TOP = (Platform.OS === 'ios' ? insets.top : (StatusBar.currentHeight ?? 0)) + HEADER_HEIGHT;
 
   const tx = useRef(new Animated.Value(-WIDTH)).current;
   const fade = useRef(new Animated.Value(0)).current;

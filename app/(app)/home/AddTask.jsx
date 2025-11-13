@@ -5,6 +5,7 @@ import { DateInput } from '../../../src/components/input/DateInput';
 import { Input } from '../../../src/components/input/Input';
 import { TimeInput } from '../../../src/components/input/TimeInput';
 import { api } from '../../../src/services/api/api';
+import { sp } from '../../../src/dimensions';
 import { colors } from '../../../src/theme/colors';
 
 const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
@@ -74,7 +75,7 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
 };
 
 const s = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)', justifyContent: 'center', padding: 20 },
+  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)', justifyContent: 'center', padding: sp(5) },
   modal: {
     backgroundColor: colors.bg,
     borderRadius: 16,
@@ -87,8 +88,8 @@ const s = StyleSheet.create({
   label: { color: '#0f172a', fontWeight: '600', marginTop: 6, fontSize: 12 },
   field: { width: '100%', alignSelf: 'stretch', marginBottom: 14 },
   inputFull: { width: '100%' },
-  inputSingle: { height: 48, minHeight: 48, paddingVertical: 12 },
-  inputMultiline: { minHeight: 120, textAlignVertical: 'top', paddingTop: 12, paddingBottom: 12 },
+  inputSingle: { height: sp(80) },
+  inputMultiline: { height: sp(180), textAlignVertical: 'top' },
   modalActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 10, marginTop: 12 },
   primaryBtn: { backgroundColor: colors.black, borderRadius: 10, paddingVertical: 16, width: '100%', alignItems: 'center' },
   primaryText: { color: colors.white, fontWeight: '700' },

@@ -5,6 +5,7 @@ export const styles = {
   view: { alignItems: 'flex-start', paddingTop: sp(4), paddingBottom: sp(42) },
   box: { flex: 1, backgroundColor: colors.primary },
   container: { width: '100%', maxWidth: sp(1400), paddingHorizontal: sp(20) },
+  header: { height: sp(140), width: '100%', backgroundColor: colors.primary },
   title: sp(32),
   subtitle: sp(18),
   inputH: sp(80),

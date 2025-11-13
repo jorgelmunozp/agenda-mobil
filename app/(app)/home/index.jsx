@@ -7,8 +7,8 @@ import { TaskItem } from './TaskItem';
 import { AppMenu } from '../../../src/components/menu/AppMenu';
 import { SearchInput } from '../../../src/components/search/SearchInput';
 import { Title } from '../../../src/components/title/Title';
-import { sp } from '../../../src/dimensions';
 import { api } from '../../../src/services/api/api';
+import {sp } from '../../../src/dimensions';
 import { colors } from '../../../src/theme/colors';
 import { styles } from '../../../src/theme/styles';
 import { Feather } from '@expo/vector-icons';
@@ -21,7 +21,7 @@ export default function Home() {
   const [openMenu, setOpenMenu] = useState(false);
 
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
 
   // ====== PAGINACIÓN ====== //
@@ -34,8 +34,8 @@ export default function Home() {
 
   // Obtener tareas desde el backend (con paginación)
   const fetchTasks = useCallback(async () => {
+    // setLoading(true);
     try {
-      setLoading(true);
       const token = await AsyncStorage.getItem('token');
       const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
 
@@ -52,7 +52,7 @@ export default function Home() {
       console.log('tasks', e?.message);
       setTasks([]);
     } finally {
-      setLoading(false);
+      setLoading(false); 
     }
   }, [userId, pagination]);
 
@@ -87,7 +87,7 @@ export default function Home() {
     }
   };
 
-  // Loading state fallback
+  // Loading fallback
   if (loading) {
     return (
       <View style={[styles.box, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
@@ -101,9 +101,9 @@ export default function Home() {
     <>
       <ScrollView style={styles.box} contentContainerStyle={styles.view} keyboardShouldPersistTaps="handled">
         <View style={[styles.container, s.rel]}>
-          <View>
+          <View style={s.titleBox}>
             <Title>TAREAS</Title>
-            <Pressable onPress={openAddTask} style={[s.plusBtn, { position: 'absolute', right: 0 }]}>
+            <Pressable onPress={openAddTask} style={s.plusBtn}>
               <Feather name="plus" size={32} color={colors.white} />
             </Pressable>
           </View>
@@ -133,11 +133,14 @@ export default function Home() {
 const s = StyleSheet.create({
   box: { flex: 1, backgroundColor: colors.bg, padding: 20 },
   rel: { position: 'relative' },
+  titleBox: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   plusBtn: {
+    position: 'absolute',
+    right: sp(0),
+    top: sp(15),
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
