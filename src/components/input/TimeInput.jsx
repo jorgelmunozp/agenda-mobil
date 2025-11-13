@@ -21,31 +21,23 @@ export const TimeInput = ({ value, onChange, style, inputStyle }) => {
     }
   };
 
+  // ===== WEB =====
   if (Platform.OS === 'web') {
+    const webStyle = StyleSheet.flatten([stylesWeb.input, style, inputStyle]);
+
     return (
-      <TextInput
-        value={value}
-        onChangeText={(text) => onChange?.(text)}   // ⬅️ aquí
-        style={[stylesWeb.input, style, inputStyle]}
-        // @ts-ignore
-        type="time"
-      />
+      // 👇 elemento HTML real, NO TextInput
+      <input type="time" value={value || ''} onChange={(e) => onChange?.(e.target.value)} style={webStyle} />
     );
   }
 
+  // ===== MOBILE (lo que ya tenías y funciona) =====
   return (
     <View style={style}>
       <Pressable onPress={() => setShow(true)} style={[s.input, inputStyle]}>
         <Text style={s.text}>{value || 'Hora'}</Text>
       </Pressable>
-      {show && (
-        <DateTimePicker
-          value={inner}
-          mode="time"
-          display="default"
-          onChange={handleChange}
-        />
-      )}
+      {show && <DateTimePicker value={inner} mode="time" display="default" onChange={handleChange} />}
     </View>
   );
 };
@@ -77,6 +69,7 @@ const stylesWeb = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: colors.white,
     color: '#000',
+    textAlign: 'center',
   },
 });
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Platform, Pressable, StyleSheet, Text, View, TextInput } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { colors } from '../../theme/colors';
 
@@ -18,22 +18,18 @@ export const DateInput = ({ value, onChange, style, inputStyle }) => {
     setShow(false);
     if (selected) {
       setInner(selected);
-      onChange?.(fmt(selected));
+      onChange && onChange(fmt(selected));
     }
   };
 
+  // ===== WEB =====
   if (Platform.OS === 'web') {
-    return (
-      <TextInput
-        value={value}
-        onChange={(e) => onChange?.(e.target.value)}
-        style={[stylesWeb.input, style, inputStyle]}
-        type="date"
-      />
-    );
+    const webStyle = StyleSheet.flatten([stylesWeb.input, style, inputStyle]);
+
+    return <input type="date" value={value || ''} onChange={(e) => onChange && onChange(e.target.value)} style={webStyle} />;
   }
 
-  // Mobile: abrimos el picker nativo
+  // ===== MOBILE: picker nativo =====
   return (
     <View style={style}>
       <Pressable onPress={() => setShow(true)} style={[s.input, inputStyle]}>
@@ -71,6 +67,7 @@ const stylesWeb = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: colors.white,
     color: '#000',
+    textAlign: 'center',
   },
 });
 
