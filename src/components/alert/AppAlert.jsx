@@ -70,13 +70,13 @@ const S = StyleSheet.create({
   iconWrap: { alignItems: 'center', marginTop: 18, marginBottom: 10 },
   iconCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 5, alignItems: 'center', justifyContent: 'center' },
 
-  title: { fontSize: 32, fontWeight: '600', color: '#4b5563', textAlign: 'center', marginTop: 18, marginBottom: 20 },
+  title: { fontSize: 24, fontWeight: '600', color: '#4b5563', textAlign: 'center', marginTop: 18, marginBottom: 20 },
   msg: { fontSize: 16, color: '#111827', textAlign: 'center', lineHeight: 22, marginBottom: 6 },
 
   list: { gap: 8, marginBottom: 6 },
   li: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   dot: { width: 7, height: 7, borderRadius: 4, marginTop: 8 },
-  liText: { flex: 1, fontSize: 22, lineHeight: 26 },
+  liText: { flex: 1, fontSize: 14, lineHeight: 26 },
 
   actions: { marginTop: 32 },
   btn: { width: '100%', borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center' },

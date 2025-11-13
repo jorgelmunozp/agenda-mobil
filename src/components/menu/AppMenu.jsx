@@ -111,5 +111,5 @@ const s = StyleSheet.create({
   closeBtn:{ position:'absolute', right:6, top:6, zIndex:3, padding:4, backgroundColor:'transparent' },
   item:{ paddingVertical:12 },
   rowInner:{ flexDirection:'row', alignItems:'center', gap:10, marginLeft:10 },
-  text:{ color:'#111827', fontSize:16 }
+  text:{ color:'#111827', fontSize:14 }
 });

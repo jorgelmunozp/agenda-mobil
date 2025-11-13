@@ -36,6 +36,7 @@ const handleNewTask = async (userId, item, setModal, setItem, onSaved) => {
 
 export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
   const [item, setItem] = useState({ name: '', date: '', time: '', message: '' });
+
   const handleChange = (k, v) => setItem((prev) => ({ ...prev, [k]: v }));
 
   return (

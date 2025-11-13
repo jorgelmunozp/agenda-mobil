@@ -17,7 +17,7 @@ const passwordUpdateEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_UPDATE;
 export default function PasswordReset() {
   const { token } = useLocalSearchParams();
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [alert, setAlert] = useState({ visible: false, title: '', message: '', buttons: [], type: 'info' });
   const show = (title, message, buttons, type = 'info') =>
@@ -40,7 +40,6 @@ export default function PasswordReset() {
       return;
     }
 
-    setLoading(true);
     try {
       const response = await api.patch(passwordUpdateEndpoint, { token, newPassword: password });
       const msg = response?.data?.message || 'Contraseña actualizada correctamente';

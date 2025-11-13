@@ -47,6 +47,7 @@ const s = StyleSheet.create({
     textAlign: 'left',
     paddingTop: 8,
     paddingBottom: 8,
+    textAlign: 'center',
   },
   icon: {
     position: 'absolute',
