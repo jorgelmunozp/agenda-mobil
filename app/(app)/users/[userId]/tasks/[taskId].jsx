@@ -20,9 +20,7 @@ export default function Task(){
 
   useEffect(() => { ( async () => { 
     try {
-      const token = await AsyncStorage.getItem('token');
-      const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-      const response = await api.get(`${usersEndpoint}/${userId}/tasks/${taskId}`, { headers });
+      const response = await api.get(`${usersEndpoint}/${userId}/tasks/${taskId}`);
       setTask(response?.data?.task || {});
     } catch (e) {
       console.log('task', e?.message);

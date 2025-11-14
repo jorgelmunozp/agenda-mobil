@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
-import { ActivityIndicator, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { DateInput } from '../../../src/components/input/DateInput';
 import { Input } from '../../../src/components/input/Input';
 import { TimeInput } from '../../../src/components/input/TimeInput';
@@ -22,12 +22,7 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
     try {
       setSaving(true);
 
-      const token = await AsyncStorage.getItem('token');
-      const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-
-      const response = await api.post(`${usersEndpoint}/${userId}/tasks`, item, { headers });
-      const data = response?.data || {};
-      console.log('Created task:', data);
+      const response = await api.post(`${usersEndpoint}/${userId}/tasks`, item);
 
       if (typeof onSaved === 'function') {
         await onSaved();
@@ -36,7 +31,7 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
       setItem({ name: '', date: '', time: '', message: '' });
       setModal(false);
     } catch (e) {
-      console.log('create task', e?.message);
+      console.log('Error creating task: ', e?.message);
     } finally {
       setSaving(false);
     }
@@ -101,7 +96,6 @@ const s = StyleSheet.create({
     width: '90%',
     maxWidth: 900,
     alignSelf: 'center',
-    ...Platform.select({ web: { outlineStyle: 'none' } }),
   },
   label: {
     color: '#0f172a',
