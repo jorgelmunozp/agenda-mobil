@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Animated, Easing, Platform, StyleSheet as RNStyleSheet } from 'react-native';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../services/auth/authContext';
 import { colors } from '../../theme/colors';
@@ -25,15 +25,11 @@ export const AppMenu = () => {
   useEffect(() => {
     if (open) {
       if (!mounted) setMounted(true);
-      Animated.parallel([
-        Animated.timing(fade, { toValue: 1, duration: DURATION, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
-        Animated.timing(tx,   { toValue: 0, duration: DURATION, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
-      ]).start();
+      Animated.parallel([Animated.timing(fade, { toValue: 1, duration: DURATION, easing: Easing.out(Easing.cubic), useNativeDriver: true }), Animated.timing(tx, { toValue: 0, duration: DURATION, easing: Easing.out(Easing.cubic), useNativeDriver: true })]).start();
     } else if (mounted) {
-      Animated.parallel([
-        Animated.timing(fade, { toValue: 0, duration: DURATION, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
-        Animated.timing(tx,   { toValue: -WIDTH, duration: DURATION, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
-      ]).start(({ finished }) => { if (finished) setMounted(false); });
+      Animated.parallel([Animated.timing(fade, { toValue: 0, duration: DURATION, easing: Easing.in(Easing.cubic), useNativeDriver: true }), Animated.timing(tx, { toValue: -WIDTH, duration: DURATION, easing: Easing.in(Easing.cubic), useNativeDriver: true })]).start(({ finished }) => {
+        if (finished) setMounted(false);
+      });
     }
   }, [open, mounted, fade, tx]);
 
@@ -46,36 +42,29 @@ export const AppMenu = () => {
 
   if (!mounted) return null;
 
-  const Row = ({ children, onPress, href }) => {
-    const shift = useRef(new Animated.Value(0)).current;
-    const animateTo = (v: number) =>
-      Animated.timing(shift, { toValue: v, duration: 160, easing: Easing.out(Easing.cubic), useNativeDriver: true }).start();
-
-    const content = (
-      <Pressable
-        onPress={onPress}
-        onHoverIn={() => animateTo(6)}
-        onHoverOut={() => animateTo(0)}
-        onPressIn={() => animateTo(10)}
-        onPressOut={() => animateTo(0)}
-        style={s.item}
-      >
-        <Animated.View style={{ transform: [{ translateX: shift }] }}>
-          {children}
-        </Animated.View>
-      </Pressable>
-    );
-
-    return href ? (
-      <Link href={href} asChild>
-        {content}
-      </Link>
-    ) : (
-      content
-    );
+  const go = (href) => {
+    closeMenu();
+    router.replace(href);
   };
 
   const homeHref = user?.id ? `/(app)/home?userId=${encodeURIComponent(String(user.id))}` : '/(app)/home';
+
+  const Row = ({ icon, label, onPress }) => {
+    const shift = useRef(new Animated.Value(0)).current;
+    const animateTo = (v) => {
+      Animated.timing(shift, { toValue: v, duration: 160, easing: Easing.out(Easing.cubic), useNativeDriver: true }).start();
+    };
+    return (
+      <Pressable onPress={onPress} onHoverIn={() => animateTo(6)} onHoverOut={() => animateTo(0)} onPressIn={() => animateTo(10)} onPressOut={() => animateTo(0)} style={s.item}>
+        <Animated.View style={{ transform: [{ translateX: shift }] }}>
+          <View style={s.rowInner}>
+            <Feather name={icon} size={18} color={colors.primary} />
+            <Text style={s.text}>{label}</Text>
+          </View>
+        </Animated.View>
+      </Pressable>
+    );
+  };
 
   return (
     <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, top: MENU_TOP, zIndex: 9999 }}>
@@ -85,7 +74,6 @@ export const AppMenu = () => {
 
       <Animated.View style={[s.panel, { width: WIDTH, transform: [{ translateX: tx }] }]}>
         <View style={s.menu}>
-          {/* Topbar */}
           <View style={s.topWrap}>
             <View style={s.topLine} />
             <Pressable onPress={closeMenu} hitSlop={12} style={s.closeBtn}>
@@ -93,33 +81,10 @@ export const AppMenu = () => {
             </Pressable>
           </View>
 
-          <Row href={homeHref} onPress={closeMenu}>
-            <View style={s.rowInner}>
-              <Feather name="home" size={18} color={colors.primary} />
-              <Text style={s.text}>Tareas</Text>
-            </View>
-          </Row>
-
-          <Row href="/(app)/about-us" onPress={closeMenu}>
-            <View style={s.rowInner}>
-              <Feather name="user" size={18} color={colors.primary} />
-              <Text style={s.text}>Nosotros</Text>
-            </View>
-          </Row>
-
-          <Row href="/(app)/contact" onPress={closeMenu}>
-            <View style={s.rowInner}>
-              <Feather name="phone" size={18} color={colors.primary} />
-              <Text style={s.text}>Contacto</Text>
-            </View>
-          </Row>
-
-          <Row onPress={logout}>
-            <View style={s.rowInner}>
-              <Feather name="log-out" size={18} color={colors.primary} />
-              <Text style={s.text}>Cerrar sesión</Text>
-            </View>
-          </Row>
+          <Row icon="home" label="Tareas " onPress={() => go(homeHref)} />
+          <Row icon="user" label="Nosotros " onPress={() => go('/(app)/about-us')} />
+          <Row icon="phone" label="Contacto " onPress={() => go('/(app)/contact')} />
+          <Row icon="log-out" label="Cerrar sesión " onPress={logout} />
         </View>
       </Animated.View>
     </View>
@@ -144,6 +109,6 @@ const s = StyleSheet.create({
   topLine: { position: 'absolute', left: 12, right: 12, bottom: 0, height: 1, borderRadius: 2, backgroundColor: colors.primary },
   closeBtn: { position: 'absolute', right: 6, top: 0, bottom: 0, justifyContent: 'center', padding: 4, backgroundColor: 'transparent', zIndex: 3 },
   item: { paddingVertical: 12 },
-  rowInner: { flexDirection: 'row', alignItems: 'center', gap: 10, marginLeft: 10 },
+  rowInner: { flexDirection: 'row', alignItems: 'center', marginLeft: 10, gap: 10 },
   text: { color: '#111827', fontSize: 14 },
 });

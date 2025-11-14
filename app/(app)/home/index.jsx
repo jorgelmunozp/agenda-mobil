@@ -8,7 +8,7 @@ import { AppMenu } from '../../../src/components/menu/AppMenu';
 import { SearchInput } from '../../../src/components/search/SearchInput';
 import { Title } from '../../../src/components/title/Title';
 import { api } from '../../../src/services/api/api';
-import {sp } from '../../../src/dimensions';
+import { sp } from '../../../src/dimensions';
 import { colors } from '../../../src/theme/colors';
 import { styles } from '../../../src/theme/styles';
 import { Feather } from '@expo/vector-icons';
@@ -32,35 +32,7 @@ export default function Home() {
     total: 0,
   });
 
-  // Obtener tareas desde el backend (con paginación)
-  const fetchTasks = useCallback(async () => {
-    // setLoading(true);
-    try {
-      const token = await AsyncStorage.getItem('token');
-      const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-
-      const response = await api.get(`${usersEndpoint}/${userId}/tasks?page=${pagination.page}&limit=${pagination.limit}`, { headers });
-
-      const data = Array.isArray(response?.data?.data) ? response.data.data : [];
-      setTasks(data);
-
-      const meta = response?.data?.meta;
-      if (meta && JSON.stringify(meta) !== JSON.stringify(pagination)) {
-        setPagination(meta);
-      }
-    } catch (e) {
-      console.log('tasks', e?.message);
-      setTasks([]);
-    } finally {
-      setLoading(false); 
-    }
-  }, [userId, pagination]);
-
-  useEffect(() => {
-    fetchTasks();
-  }, [fetchTasks]);
-
-  // Search
+  // ====== SEARCH ====== //
   const [q, setQ] = useState('');
   const norm = (s) =>
     (s ?? '')
@@ -68,11 +40,69 @@ export default function Home() {
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
-  const filteredTasks = tasks.filter((it) => norm(it?.task?.name ?? it?.name).includes(norm(q)));
+
+  // Obtener tareas desde el backend (con paginación + filtro)
+  const fetchTasks = useCallback(async () => {
+    setLoading(true);
+    try {
+      const token = await AsyncStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+
+      const query = `?page=${pagination.page}&limit=${pagination.limit}${
+        q ? `&q=${encodeURIComponent(q)}` : ''
+      }`;
+
+      const response = await api.get(`${usersEndpoint}/${userId}/tasks${query}`, { headers });
+
+      const data = Array.isArray(response?.data?.data) ? response.data.data : [];
+      setTasks(data);
+
+      const meta = response?.data?.meta;
+      if (meta) {
+        setPagination((prev) => {
+          const next = {
+            ...prev,
+            page: meta.page ?? prev.page,
+            limit: meta.limit ?? prev.limit,
+            total: meta.total ?? prev.total,
+            last_page: meta.last_page ?? prev.last_page,
+          };
+
+          const same =
+            prev.page === next.page &&
+            prev.limit === next.limit &&
+            prev.total === next.total &&
+            prev.last_page === next.last_page;
+
+          return same ? prev : next;
+        });
+      }
+    } catch (e) {
+      console.log('tasks', e?.message);
+      setTasks([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId, pagination.page, pagination.limit, q]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
+
+  // Filtro adicional en front (por si el backend no filtra por q o quieres normalizar acentos)
+  const filteredTasks = tasks.filter((it) =>
+    norm(it?.task?.name ?? it?.name).includes(norm(q))
+  );
 
   // Modal control
   const openAddTask = () => setModal(true);
   const closeAddTask = () => setModal(false);
+
+  // Handlers de search: resetea a página 1 y actualiza q
+  const handleSearchChange = (text) => {
+    setQ(text);
+    setPagination((prev) => ({ ...prev, page: 1 }));
+  };
 
   // Handlers de paginación
   const handleNextPage = () => {
@@ -99,7 +129,11 @@ export default function Home() {
 
   return (
     <>
-      <ScrollView style={styles.box} contentContainerStyle={styles.view} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        style={styles.box}
+        contentContainerStyle={styles.view}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={[styles.container, s.rel]}>
           <View style={s.titleBox}>
             <Title>TAREAS</Title>
@@ -108,12 +142,23 @@ export default function Home() {
             </Pressable>
           </View>
 
-          <SearchInput value={q} onChangeText={setQ} />
+          <SearchInput value={q} onChangeText={handleSearchChange} />
 
-          <TaskList data={filteredTasks} renderItem={({ item }) => <TaskItem item={item} />} keyExtractor={(it, i) => String(it?.id ?? it?._id ?? it?.taskId ?? i)} ListEmptyComponent={null} contentContainerStyle={{ paddingBottom: 12 }} scrollEnabled={false} />
+          <TaskList
+            data={filteredTasks}
+            renderItem={({ item }) => <TaskItem item={item} />}
+            keyExtractor={(it, i) => String(it?.id ?? it?._id ?? it?.taskId ?? i)}
+            ListEmptyComponent={null}
+            contentContainerStyle={{ paddingBottom: 12 }}
+            scrollEnabled={false}
+          />
 
-          {/* Paginación extraída a componente aparte */}
-          <Pagination page={pagination.page} lastPage={pagination.last_page} onPrev={handlePrevPage} onNext={handleNextPage} />
+          <Pagination
+            page={pagination.page}
+            lastPage={pagination.last_page}
+            onPrev={handlePrevPage}
+            onNext={handleNextPage}
+          />
 
           <AddTask
             userId={userId}
