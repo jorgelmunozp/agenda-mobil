@@ -42,7 +42,7 @@ const s = StyleSheet.create({
     opacity: 0.4,
   },
   pageInfo: {
-    flex: 1,
+    flex: 0.5,
     textAlign: 'center',
     color: colors.white,
     fontSize: 11,
