@@ -29,12 +29,11 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    columnGap: 12,
   },
   pageBtn: {
     width: 52,
     height: 36,
-    borderRadius: 10,
+    borderRadius: 18,
     backgroundColor: colors.button,
     alignItems: 'center',
     justifyContent: 'center',
@@ -46,7 +45,7 @@ const s = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     color: colors.white,
-    fontSize: 14,
+    fontSize: 11,
     lineHeight: 20,
   },
 });
