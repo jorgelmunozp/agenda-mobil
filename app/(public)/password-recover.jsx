@@ -46,7 +46,7 @@ export default function PasswordRecover() {
     try {
       setLoading(true);
       const response = await api.post(passwordRecoverEndpoint, { email }, { headers: { 'x-client': 'mobile' } });
-      const successMsg = response?.data?.message || 'Te enviamos el enlace de recuperación a tu correo.';
+      const successMsg = response?.data?.message || 'Enlace de recuperación enviado a tu correo';
       show('Listo', successMsg, [{ text: 'Ir al Login', onPress: () => router.replace('/(public)/login') }], 'success');
     } catch (e) {
       const lines = errorLines(e);
