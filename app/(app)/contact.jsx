@@ -31,7 +31,6 @@ export default function Contact() {
 }
 
 const s = StyleSheet.create({
-  box: { flex: 1, padding: 20, backgroundColor: colors.bg },
   title: { color: colors.white, textAlign: 'center' },
   p: { fontSize: sp(11), color: colors.white, textAlign: 'center' },
 });

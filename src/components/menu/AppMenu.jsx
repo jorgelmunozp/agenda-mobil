@@ -3,10 +3,11 @@ import { View, Text, StyleSheet, Pressable, Animated, Easing, Platform, StyleShe
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../services/auth/authContext';
+import { Logo } from '../logo/Logo';
 import { colors } from '../../theme/colors';
-import { Feather } from '@expo/vector-icons';
 import { useMenu } from '../../hooks/useMenu';
 import { styles } from '../../theme/styles';
+import { Feather } from '@expo/vector-icons';
 
 const WIDTH = 320;
 const DURATION = 360;
@@ -74,10 +75,10 @@ export const AppMenu = () => {
 
       <Animated.View style={[s.panel, { width: WIDTH, transform: [{ translateX: tx }] }]}>
         <View style={s.menu}>
-          <View style={s.topWrap}>
-            <View style={s.topLine} />
+          <View style={s.header}>
+            <Logo width={25} height={25} color={s.logo.color} style={s.logo} />
             <Pressable onPress={closeMenu} hitSlop={12} style={s.closeBtn}>
-              <Feather name="x" size={20} color={colors.primary} />
+              <Feather name="x" size={23} color={colors.primary} />
             </Pressable>
           </View>
 
@@ -104,11 +105,11 @@ const s = StyleSheet.create({
       ios: { shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 0, height: 6 } },
     }),
   },
-  menu: { backgroundColor: '#ddd', padding: 16, width: '100%', flex: 1 },
-  topWrap: { position: 'relative', height: 32, marginBottom: 32, justifyContent: 'center' },
-  topLine: { position: 'absolute', left: 12, right: 12, bottom: 0, height: 1, borderRadius: 2, backgroundColor: colors.primary },
-  closeBtn: { position: 'absolute', right: 6, top: 0, bottom: 0, justifyContent: 'center', padding: 4, backgroundColor: 'transparent', zIndex: 3 },
+  menu: { backgroundColor: '#ddd', paddingVertical: 18, paddingHorizontal: 26, width: '100%', flex: 1 },
+  header: { position: 'relative', display: 'flex', flexDirection: 'row', height: 32, marginBottom: 32, paddingBottom: 64, alignItems: 'center', justifyContent: 'space-between', borderBottomColor: colors.primary, borderBottomWidth: 2 },
+  logo: { color: colors.primary, position: 'absolute', left: 0},
+  closeBtn: { position: 'absolute', right: 0 },
   item: { paddingVertical: 12 },
-  rowInner: { flexDirection: 'row', alignItems: 'center', marginLeft: 10, gap: 10 },
+  rowInner: { flexDirection: 'row', alignItems: 'center', marginLeft: 6, gap: 10 },
   text: { color: '#111827', fontSize: 14 },
 });

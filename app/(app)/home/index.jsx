@@ -88,7 +88,7 @@ export default function Home() {
           <View style={s.titleBox}>
             <Title>TAREAS</Title>
             <Pressable onPress={openAddTask} style={s.plusBtn}>
-              <Feather name="plus" size={36} color={colors.white} />
+              <Feather name="plus" size={30} color={colors.white} />
             </Pressable>
           </View>
 
@@ -106,7 +106,6 @@ export default function Home() {
 }
 
 const s = StyleSheet.create({
-  box: { flex: 1, backgroundColor: colors.bg, padding: 20 },
   rel: { position: 'relative' },
   titleBox: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   plusBtn: {

@@ -13,7 +13,7 @@ export const Input = ({ value, onChangeText, placeholder, style, inputStyle, isI
     <View style={[s.wrap, wrapperSize, style]}>
       {isIcon && <Ionicons name={icon} size={fs(styles.icon)} color={colors.black} style={s.icon} />}
 
-      <TextInput value={value} onChangeText={onChangeText} placeholder={placeholder} placeholderTextColor={placeholderTextColor} multiline={multiline} numberOfLines={multiline ? props.numberOfLines || 4 : 1} {...props} style={[s.input, isIcon && { paddingLeft: fs(styles.icon) + 26 }, multiline && s.inputMultiline, inputStyle]} />
+      <TextInput value={value} onChangeText={onChangeText} placeholder={placeholder} placeholderTextColor={placeholderTextColor} multiline={multiline} numberOfLines={multiline ? props.numberOfLines || 4 : 1} {...props} style={[s.input, multiline && s.inputMultiline, inputStyle]} />
     </View>
   );
 };

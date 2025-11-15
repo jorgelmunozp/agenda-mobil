@@ -10,13 +10,14 @@ export const Button = (props) => (
         onPress={props.onPress}
         disabled={props.disabled} 
     >
-        <Text style={{color:colors.white, fontSize:fs(20), fontWeight:'800'}}>
+        <Text style={s.label}>
         {props.disabled ? props.fallbackLabel : props.label}
         </Text>
     </Pressable>
 );
 
-const s=StyleSheet.create({ 
-  button:{ backgroundColor:colors.button, alignItems:'center', justifyContent:'center', marginTop:8 }
+const s = StyleSheet.create({
+  button: { backgroundColor: colors.button, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
+  label: { color: colors.white, fontSize: fs(14), fontWeight: '800' },
 });
 

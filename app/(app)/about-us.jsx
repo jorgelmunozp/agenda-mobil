@@ -20,6 +20,5 @@ export default function AboutUs() {
 }
 
 const s = StyleSheet.create({ 
-    box:{flex:1,padding:20,backgroundColor:colors.bg}, 
     p:{color:'#6b7280'} 
 });

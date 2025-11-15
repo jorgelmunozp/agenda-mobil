@@ -68,7 +68,7 @@ export default function Login() {
             <Button label="Registrarse" fallbackLabel="Registrando..." onPress={() => router.push('/(public)/register')} />
             <Pressable onPress={() => router.push('/(public)/password-recover')} style={{ backgroundColor: '#d00000', borderRadius: sp(styles.radius + 2), padding: sp(1), marginTop: sp(12) }}>
               <View style={{ backgroundColor: colors.black, height: sp(styles.btnH), borderRadius: sp(styles.radius + 2), alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ color: colors.white, fontSize: fs(16), fontWeight: '800' }}>¿Olvidaste tu contraseña?</Text>
+                <Text style={{ color: colors.white, fontSize: fs(14), fontWeight: '800' }}>¿Olvidaste tu contraseña?</Text>
               </View>
             </Pressable>
           </View>
