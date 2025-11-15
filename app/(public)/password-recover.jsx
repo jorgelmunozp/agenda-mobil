@@ -65,8 +65,8 @@ export default function PasswordRecover() {
           <Input value={email} onChangeText={setEmail} isIcon={true} icon="at" keyboardType="email-address" autoCapitalize="none" />
 
           <View style={styles.actions}>
-            <Button label="Enviar enlace" fallbackLabel="Enviando..." onPress={sendEmail} disabled={loading} />
-            <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={() => router.push('/(public)/login')} />
+            <Button label="Enviar enlace" fallbackLabel="Enviando..." onPress={sendEmail} disabled={loading} backgroundColor={colors.button} />
+            <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={() => router.push('/(public)/login')} backgroundColor={colors.button} />
           </View>
         </View>
       </ScrollView>

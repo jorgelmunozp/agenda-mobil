@@ -2,8 +2,8 @@ import { sp } from '../dimensions';
 import { colors } from './colors';
 
 export const styles = {
-  view: { alignItems: 'flex-start', paddingTop: sp(4), paddingBottom: sp(80) },
   box: { flex: 1, backgroundColor: colors.primary },
+  view: { alignItems: 'flex-start', paddingTop: sp(4), paddingBottom: sp(80) },
   container: { width: '100%', maxWidth: sp(1400), paddingHorizontal: sp(20) },
   header: { height: sp(130), width: '100%', backgroundColor: colors.primary },
   title: sp(24),

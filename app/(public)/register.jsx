@@ -74,8 +74,8 @@ export default function Register() {
           <Input value={password} onChangeText={setPassword} secureTextEntry isIcon={true} icon="lock-closed-outline" autoCapitalize="none" />
 
           <View style={styles.actions}>
-            <Button label="Crear cuenta" fallbackLabel="Registrando..." onPress={handleRegister} disabled={loading} />
-            <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={() => router.push('/(public)/login')} />
+            <Button label="Crear cuenta" fallbackLabel="Registrando..." onPress={handleRegister} disabled={loading} backgroundColor={colors.button} />
+            <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={() => router.push('/(public)/login')} backgroundColor={colors.button} />
           </View>
         </View>
       </ScrollView>

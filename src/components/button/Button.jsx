@@ -6,7 +6,7 @@ import { sp, fs } from '../../../src/dimensions';
 
 export const Button = (props) => (
     <Pressable
-        style={[s.button, {height:sp(styles.btnH), borderRadius:sp(styles.radius)}]}
+        style={[s.button, { backgroundColor:props.backgroundColor, height:sp(styles.btnH), borderRadius:sp(styles.radius) }]}
         onPress={props.onPress}
         disabled={props.disabled} 
     >
@@ -17,7 +17,7 @@ export const Button = (props) => (
 );
 
 const s = StyleSheet.create({
-  button: { backgroundColor: colors.button, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
+  button: { alignItems: 'center', justifyContent: 'center', marginTop: 8 },
   label: { color: colors.white, fontSize: fs(14), fontWeight: '800' },
 });
 

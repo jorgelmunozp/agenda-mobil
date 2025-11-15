@@ -1,5 +1,6 @@
+import { ScrollView, Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Button } from '../button/Button';
 import { Ionicons } from '@expo/vector-icons';
-import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../theme/colors';
 
 const VARIANT = {
@@ -8,10 +9,8 @@ const VARIANT = {
   info: { icon: 'information', iconColor: '#3b82f6', ring: '#93c5fd', accent: '#3b82f6' }, // azul
 };
 
-export const AppAlert = ({ visible, title, message, onClose, buttons, type = 'info', btnColor = colors.black }) => {
-  const v = VARIANT[type] ?? VARIANT.info;
-
-  const btns = buttons?.length ? buttons : [{ text: 'Aceptar', onPress: onClose }];
+export const AppAlert = ({ visible, title, message, onClose, type = 'info', btnColor = colors.black }) => {
+  const icon = VARIANT[type] ?? VARIANT.info;
 
   const lines = Array.isArray(message)
     ? message.filter(Boolean)
@@ -22,63 +21,54 @@ export const AppAlert = ({ visible, title, message, onClose, buttons, type = 'in
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
-      <View style={S.overlay}>
-        <View style={S.card}>
-          <View style={S.iconWrap}>
-            <View style={[S.iconCircle, { borderColor: v.ring }]}>
-              <Ionicons name={v.icon} size={70} color={v.iconColor} />
+      <ScrollView style={s.overlay} contentContainerStyle={s.box}>
+        <View style={s.card}>
+          <View style={s.iconWrap}>
+            <View style={[s.iconCircle, { borderColor: icon.ring }]}>
+              <Ionicons name={icon.icon} size={70} color={icon.iconColor} />
             </View>
           </View>
 
-          {title ? <Text style={S.title}>{title}</Text> : null}
+          {title ? <Text style={s.title}>{title}</Text> : null}
 
           {lines.length > 1 ? (
-            <View style={S.list}>
+            <View style={s.list}>
               {lines.map((t, i) => (
-                <View key={i} style={S.li}>
-                  <View style={[S.dot, { backgroundColor: v.accent }]} />
-                  <Text style={[S.liText, { color: v.accent }]}>{t}</Text>
+                <View key={i} style={s.li}>
+                  <View style={[s.dot, { backgroundColor: icon.accent }]} />
+                  <Text style={[s.liText, { color: icon.accent }]}>{t}</Text>
                 </View>
               ))}
             </View>
           ) : lines[0] ? (
-            <Text style={S.msg}>{lines[0]}</Text>
+            <Text style={s.msg}>{lines[0]}</Text>
           ) : null}
 
-          <View style={S.actions}>
-            {btns.map((b, i) => (
-              <Pressable
-                key={i}
-                style={[S.btn, { backgroundColor: btnColor }]}
-                onPress={() => {
-                  b.onPress?.();
-                  onClose?.();
-                }}>
-                <Text style={S.btnText}>{b.text}</Text>
-              </Pressable>
-            ))}
+          <View style={s.actions}>
+            <Button label={'Aceptar'} onPress={() => onClose?.() } backgroundColor={colors.black} />
           </View>
         </View>
-      </View>
+      </ScrollView>
     </Modal>
   );
 };
 
-const S = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)', justifyContent: 'center', padding: 20 },
+const s = StyleSheet.create({
+  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)' },
+  box: { flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   card: { backgroundColor: '#fff', borderRadius: 8, padding: 20, width: '90%', maxWidth: 520, alignSelf: 'center', ...Platform.select({ web: { outlineStyle: 'none' } }) },
   iconWrap: { alignItems: 'center', marginTop: 18, marginBottom: 10 },
   iconCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 5, alignItems: 'center', justifyContent: 'center' },
 
-  title: { fontSize: 24, fontWeight: '600', color: '#4b5563', textAlign: 'center', marginTop: 18, marginBottom: 20 },
-  msg: { fontSize: 16, color: '#111827', textAlign: 'center', lineHeight: 22, marginBottom: 6 },
+  title: { fontSize: 18, fontWeight: '600', color: '#4b5563', textAlign: 'center', marginTop: 14, marginBottom: 20 },
+  msg: { fontSize: 14, color: '#111827', textAlign: 'center', lineHeight: 22, marginBottom: 6 },
 
   list: { gap: 8, marginBottom: 6 },
   li: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
   dot: { width: 7, height: 7, borderRadius: 4, marginTop: 8 },
-  liText: { flex: 1, fontSize: 14, lineHeight: 26 },
+  liText: { flex: 1, fontSize: 10, lineHeight: 26 },
 
   actions: { marginTop: 32 },
   btn: { width: '100%', borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center' },
-  btnText: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  btnText: { color: '#fff', fontWeight: '700', fontSize: 12 },
 });

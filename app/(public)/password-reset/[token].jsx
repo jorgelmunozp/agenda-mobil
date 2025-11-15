@@ -77,8 +77,8 @@ export default function PasswordReset() {
           <Input value={password} onChangeText={setPassword} secureTextEntry isIcon={true} icon="lock-closed-outline" autoCapitalize="none" placeholder="Escribe tu nueva contraseña" />
 
           <View style={styles.actions}>
-            <Button label="Confirmar" fallbackLabel="Guardando..." onPress={handleReset} disabled={loading} />
-            <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={handleCancel} />
+            <Button label="Confirmar" fallbackLabel="Guardando..." onPress={handleReset} disabled={loading} backgroundColor={colors.button} />
+            <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={handleCancel} backgroundColor={colors.button} />
           </View>
         </View>
       </ScrollView>
