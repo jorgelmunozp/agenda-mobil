@@ -104,7 +104,7 @@ const s = StyleSheet.create({
       ios: { shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 10, shadowOffset: { width: 0, height: 6 } },
     }),
   },
-  menu: { backgroundColor: '#fff', padding: 16, width: '100%', flex: 1 },
+  menu: { backgroundColor: '#ddd', padding: 16, width: '100%', flex: 1 },
   topWrap: { position: 'relative', height: 32, marginBottom: 32, justifyContent: 'center' },
   topLine: { position: 'absolute', left: 12, right: 12, bottom: 0, height: 1, borderRadius: 2, backgroundColor: colors.primary },
   closeBtn: { position: 'absolute', right: 6, top: 0, bottom: 0, justifyContent: 'center', padding: 4, backgroundColor: 'transparent', zIndex: 3 },
