@@ -31,21 +31,17 @@ export const AppAlert = ({ visible, title, message, onClose, type = 'info', btnC
 
           {title ? <Text style={s.title}>{title}</Text> : null}
 
-          {lines.length > 1 ? (
-            <View style={s.list}>
-              {lines.map((t, i) => (
-                <View key={i} style={s.li}>
-                  <View style={[s.dot, { backgroundColor: icon.accent }]} />
-                  <Text style={[s.liText, { color: icon.accent }]}>{t}</Text>
-                </View>
-              ))}
-            </View>
-          ) : lines[0] ? (
-            <Text style={s.msg}>{lines[0]}</Text>
-          ) : null}
+          <View style={s.list}>
+            {lines.map((t, i) => (
+              <View key={i} style={s.li}>
+                <View style={[s.dot, { backgroundColor: icon.accent }]} />
+                <Text style={[s.liText, { color: icon.accent }]}>{t}</Text>
+              </View>
+            ))}
+          </View>
 
           <View style={s.actions}>
-            <Button label={'Aceptar'} onPress={() => onClose?.() } backgroundColor={colors.black} />
+            <Button label={'Aceptar'} onPress={() => onClose?.()} backgroundColor={colors.black} />
           </View>
         </View>
       </ScrollView>
@@ -55,17 +51,17 @@ export const AppAlert = ({ visible, title, message, onClose, type = 'info', btnC
 
 const s = StyleSheet.create({
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)' },
-  box: { flex: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  box: { flexGrow: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 40 },
   card: { backgroundColor: '#fff', borderRadius: 8, padding: 20, width: '90%', maxWidth: 520, alignSelf: 'center', ...Platform.select({ web: { outlineStyle: 'none' } }) },
   iconWrap: { alignItems: 'center', marginTop: 18, marginBottom: 10 },
   iconCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 5, alignItems: 'center', justifyContent: 'center' },
 
   title: { fontSize: 18, fontWeight: '600', color: '#4b5563', textAlign: 'center', marginTop: 14, marginBottom: 20 },
-  msg: { fontSize: 14, color: '#111827', textAlign: 'center', lineHeight: 22, marginBottom: 6 },
+  msg: { fontSize: 10, color: '#111827', textAlign: 'center', lineHeight: 22, marginBottom: 6 },
 
   list: { gap: 8, marginBottom: 6 },
-  li: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
-  dot: { width: 7, height: 7, borderRadius: 4, marginTop: 8 },
+  li: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  dot: { width: 7, height: 7, borderRadius: 4 },
   liText: { flex: 1, fontSize: 10, lineHeight: 26 },
 
   actions: { marginTop: 32 },
