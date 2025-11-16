@@ -10,6 +10,7 @@ import { Label } from '../../../src/components/label/Label';
 import { Title } from '../../../src/components/title/Title';
 import { errorLines } from '../../../src/helpers/errorLines';
 import { api } from '../../../src/services/api/api';
+import { useAlert } from '../../../src/hooks/useAlert';
 
 const passwordUpdateEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_UPDATE;
 
@@ -18,24 +19,19 @@ export default function PasswordReset() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [alert, setAlert] = useState({ visible: false, title: '', message: '', buttons: [], type: 'info' });
-  const show = (title, message, buttons, type = 'info') =>
-    setAlert({
-      visible: true,
-      title,
-      message,
-      buttons: buttons?.length ? buttons : [{ text: 'Aceptar' }],
-      type,
-    });
-  const hide = () => setAlert((a) => ({ ...a, visible: false }));
+  const { alert, showSuccess, showError, hideAlert } = useAlert();
 
   const handleReset = async () => {
     setLoading(true);
     try {
-      const response = await api.patch(passwordUpdateEndpoint, { token, newPassword: password });
+      const response = await api.patch(passwordUpdateEndpoint, {
+        token,
+        newPassword: password,
+      });
+
       const msg = response?.data?.message || 'Contraseña actualizada correctamente';
 
-      show(
+      showSuccess(
         'Contraseña actualizada',
         [msg],
         [
@@ -44,11 +40,12 @@ export default function PasswordReset() {
             onPress: () => router.replace('/(public)/login'),
           },
         ],
-        'success',
       );
     } catch (e) {
       const lines = errorLines(e);
-      show('Error', lines.length ? lines : ['No se pudo actualizar la contraseña'], undefined, 'error');
+      const message = lines.length > 0 ? lines : ['No se pudo actualizar la contraseña'];
+
+      showError('Error', message);
     } finally {
       setLoading(false);
     }
@@ -74,7 +71,7 @@ export default function PasswordReset() {
         </View>
       </ScrollView>
 
-      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hide} />
+      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hideAlert} />
     </>
   );
 }

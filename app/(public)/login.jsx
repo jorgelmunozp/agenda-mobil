@@ -13,6 +13,7 @@ import { errorLines } from '../../src/helpers/errorLines';
 import { api } from '../../src/services/api/api';
 import { AuthContext } from '../../src/services/auth/authContext';
 import { types } from '../../src/services/auth/types/types';
+import { useAlert } from '../../src/hooks/useAlert';
 
 const authEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_AUTH;
 
@@ -22,20 +23,28 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [alert, setAlert] = useState({ visible: false, title: '', message: '', buttons: [], type: 'info' });
-  const show = (title, message, buttons, type = 'info') => setAlert({ visible: true, title, message, buttons: buttons?.length ? buttons : [{ text: 'Aceptar' }], type });
-  const hide = () => setAlert((a) => ({ ...a, visible: false }));
+  const { alert, showError, hideAlert } = useAlert();
 
   const handleLogin = async () => {
     setLoading(true);
     try {
       const response = await api.post(authEndpoint, { username, password });
       const data = response?.data ?? {};
-      if (data?.token) await AsyncStorage.setItem('token', String(data.token));
-      dispatch({ type: types.login, payload: { id: String(data?.id), name: username } });
+
+      if (data?.token) {
+        await AsyncStorage.setItem('token', String(data.token));
+      }
+
+      dispatch({
+        type: types.login,
+        payload: { id: String(data?.id), name: username },
+      });
     } catch (e) {
       const lines = errorLines(e);
-      show('Error', lines.length ? lines : ['No se pudo iniciar sesión'], undefined, 'error');
+      const message = lines.length > 0 ? lines : ['No se pudo iniciar sesión'];
+
+      // usa el hook en lugar del estado local de alerta
+      showError('Error', message);
     } finally {
       setLoading(false);
     }
@@ -56,12 +65,12 @@ export default function Login() {
           <View style={styles.actions}>
             <Button label="Ingresar" fallbackLabel="Cargando..." onPress={handleLogin} disabled={loading} backgroundColor={colors.button} />
             <Button label="Registrarse" fallbackLabel="Registrando..." onPress={() => router.push('/(public)/register')} backgroundColor={colors.button} />
-            <Button label="¿Olvidaste tu contraseña?" onPress={() => router.push('/(public)/password-recover')} backgroundColor={colors.black} borderWidth={1} borderColor={colors.red} borderStyle={'solid'} />
+            <Button label="¿Olvidaste tu contraseña?" onPress={() => router.push('/(public)/password-recover')} backgroundColor={colors.black} borderWidth={1} borderColor={colors.red} borderStyle="solid" />
           </View>
         </View>
       </ScrollView>
 
-      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hide} />
+      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hideAlert} />
     </>
   );
 }

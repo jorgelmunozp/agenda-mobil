@@ -1,71 +1,112 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { colors } from '../../src/assets/styles/colors';
-import { styles } from '../../src/assets/styles/styles';
-import { AppAlert } from '../../src/components/alert/AppAlert';
-import { Button } from '../../src/components/button/Button';
-import { Input } from '../../src/components/input/Input';
-import { Label } from '../../src/components/label/Label';
-import { Title } from '../../src/components/title/Title';
-import { errorLines } from '../../src/helpers/errorLines';
-import { api } from '../../src/services/api/api';
+import { colors } from '../../../src/assets/styles/colors';
+import { styles } from '../../../src/assets/styles/styles';
+import { AppAlert } from '../../../src/components/alert/AppAlert';
+import { Button } from '../../../src/components/button/Button';
+import { Input } from '../../../src/components/input/Input';
+import { Label } from '../../../src/components/label/Label';
+import { Title } from '../../../src/components/title/Title';
+import { errorLines } from '../../../src/helpers/errorLines';
+import { api } from '../../../src/services/api/api';
+import { useAlert } from '../../../src/hooks/useAlert';
 
-const passwordRecoverEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_RECOVER;
+const passwordUpdateEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_UPDATE;
 
-export default function PasswordRecover() {
-  const [email, setEmail] = useState('');
+export default function PasswordReset() {
+  const { token } = useLocalSearchParams();
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [alert, setAlert] = useState({
-    visible: false,
-    title: '',
-    message: '',
-    buttons: [],
-    type: 'info',
-  });
+  const { alert, showSuccess, showError, hideAlert } = useAlert();
 
-  const show = (title, message, buttons, type = 'info') =>
-    setAlert({
-      visible: true,
-      title,
-      message,
-      buttons: buttons?.length ? buttons : [{ text: 'Aceptar' }],
-      type,
-    });
-  const hide = () => setAlert((a) => ({ ...a, visible: false }));
-
-  const sendEmail = async () => {
+  const handleReset = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await api.post(passwordRecoverEndpoint, { email }, { headers: { 'x-client': 'mobile' } });
-      const successMsg = response?.data?.message || 'Enlace de recuperación enviado a tu correo';
-      show('Listo', successMsg, [{ text: 'Ir al Login', onPress: () => router.replace('/(public)/login') }], 'success');
+      const response = await api.patch(passwordUpdateEndpoint, {
+        token,
+        newPassword: password,
+      });
+
+      const msg =
+        response?.data?.message || 'Contraseña actualizada correctamente';
+
+      showSuccess(
+        'Contraseña actualizada',
+        [msg],
+        [
+          {
+            text: 'Ir al login',
+            onPress: () => router.replace('/(public)/login'),
+          },
+        ],
+      );
     } catch (e) {
       const lines = errorLines(e);
-      show('Error', lines.length ? lines : 'No se pudo enviar el correo de recuperación', undefined, 'error');
+      const message =
+        lines.length > 0
+          ? lines
+          : ['No se pudo actualizar la contraseña'];
+
+      showError('Error', message);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleCancel = () => {
+    router.push('/(public)/login');
+  };
+
   return (
     <>
-      <ScrollView style={styles.box} contentContainerStyle={styles.view} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        style={styles.box}
+        contentContainerStyle={styles.view}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.container}>
-          <Title>RECUPERAR CONTRASEÑA</Title>
+          <Title>CREAR NUEVA CONTRASEÑA</Title>
 
-          <Label>Correo</Label>
-          <Input value={email} onChangeText={setEmail} isIcon={true} icon="at" keyboardType="email-address" autoCapitalize="none" />
+          <Label>Contraseña</Label>
+          <Input
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            isIcon={true}
+            icon="lock-closed-outline"
+            autoCapitalize="none"
+            placeholder="Escribe tu nueva contraseña"
+          />
 
           <View style={styles.actions}>
-            <Button label="Enviar enlace" fallbackLabel="Enviando..." onPress={sendEmail} disabled={loading} backgroundColor={colors.button} />
-            <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={() => router.push('/(public)/login')} backgroundColor={colors.button} />
+            <Button
+              label="Confirmar"
+              fallbackLabel="Guardando..."
+              onPress={handleReset}
+              disabled={loading}
+              backgroundColor={colors.button}
+            />
+            <Button
+              label="Cancelar"
+              fallbackLabel="Cancelando..."
+              onPress={handleCancel}
+              backgroundColor={colors.button}
+            />
           </View>
         </View>
       </ScrollView>
 
-      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hide} />
+      <AppAlert
+        visible={alert.visible}
+        title={alert.title}
+        message={alert.message}
+        buttons={alert.buttons}
+        type={alert.type}
+        btnColor={colors.black}
+        onClose={hideAlert}
+      />
     </>
   );
 }
