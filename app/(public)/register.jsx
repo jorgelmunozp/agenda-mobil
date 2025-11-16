@@ -30,17 +30,6 @@ export default function Register() {
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const handleRegister = async () => {
-    // Validación local
-    const missing = [];
-    if (!name) missing.push('El nombre es obligatorio');
-    if (!email) missing.push('El correo es obligatorio');
-    if (!username) missing.push('El usuario es obligatorio');
-    if (!password) missing.push('La contraseña es obligatoria');
-    if (missing.length) {
-      show('Faltan Datos', missing, undefined, 'error');
-      return;
-    }
-
     setLoading(true);
     try {
       const response = await api.post(usersEndpoint, { username, password, name, email });

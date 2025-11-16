@@ -1,42 +1,38 @@
-import { useLocalSearchParams } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, View, Text, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { api } from '../../../../../src/services/api/api';
-import { router } from 'expo-router';
-import { Title } from '../../../../../src/components/title/Title';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../src/components/button/Button';
+import { Title } from '../../../../../src/components/title/Title';
+import { Loading } from '../../../../../src/components/loading/Loading';
+import { sp } from '../../../../../src/dimensions';
+import { api } from '../../../../../src/services/api/api';
 import { colors } from '../../../../../src/theme/colors';
 import { styles } from '../../../../../src/theme/styles';
-import { sp } from '../../../../../src/dimensions';
-import { Feather } from '@expo/vector-icons';
 
 const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
 
-export default function Task(){
+export default function Task() {
   const { userId, taskId } = useLocalSearchParams();
-  const [task,setTask]=useState({});
+  const [task, setTask] = useState({});
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { ( async () => { 
-    try {
-      const response = await api.get(`${usersEndpoint}/${userId}/tasks/${taskId}`);
-      setTask(response?.data?.task || {});
-    } catch (e) {
-      console.log('task', e?.message);
-    } finally {
-      setLoading(false);
-    }
-  })(); } ,[userId,taskId]);
-  
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await api.get(`${usersEndpoint}/${userId}/tasks/${taskId}`);
+        setTask(response?.data?.task || {});
+      } catch (e) {
+        console.log('task', e?.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [userId, taskId]);
+
   // Loading fallback
-  if (loading) {
-    return (
-      <View style={[styles.box, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
-        <ActivityIndicator size="large" />
-        <Text style={{ marginTop: 8, color: colors.text }}>Cargando…</Text>
-      </View>
-    );
+   if (loading) {
+    return <Loading label={'Cargando tarea... '} />;
   }
 
   return (
@@ -61,9 +57,9 @@ export default function Task(){
     </ScrollView>
   );
 }
-const s=StyleSheet.create({ 
-  box:{flex:1,padding:20,backgroundColor:colors.bg}, 
-  p:{color:'#6b7280'}, 
-  h:{fontSize:12,marginTop:8,padding:6,textAlign:'center'},
-  label:{fontSize:10,marginTop:6,padding:6,textAlign:'center'} 
+const s = StyleSheet.create({
+  box: { flex: 1, padding: 20, backgroundColor: colors.bg },
+  p: { color: '#6b7280' },
+  h: { fontSize: 12, marginTop: 8, padding: 6, textAlign: 'center' },
+  label: { fontSize: 10, marginTop: 6, padding: 6, textAlign: 'center' },
 });

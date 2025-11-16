@@ -1,8 +1,8 @@
 import { Feather } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, FlatList as TaskList, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, FlatList as TaskList, View } from 'react-native';
+import { Loading } from '../../../src/components/loading/Loading';
 import { AppMenu } from '../../../src/components/menu/AppMenu';
 import { Pagination } from '../../../src/components/pagination/Pagination';
 import { Title } from '../../../src/components/title/Title';
@@ -73,12 +73,7 @@ export default function Home() {
 
   // Loading fallback
   if (loading) {
-    return (
-      <View style={[styles.box, { flex: 1, alignItems: 'center', justifyContent: 'center' }]}>
-        <ActivityIndicator size="large" />
-        <Text style={{ marginTop: 8, color: colors.text }}>Cargando…</Text>
-      </View>
-    );
+    return <Loading label={'Cargando tareas... '} />;
   }
 
   return (

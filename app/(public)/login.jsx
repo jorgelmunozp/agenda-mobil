@@ -1,16 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { AuthContext } from '../../src/services/auth/authContext';
+import { api } from '../../src/services/api/api';
 import { AppAlert } from '../../src/components/alert/AppAlert';
 import { Button } from '../../src/components/button/Button';
 import { Input } from '../../src/components/input/Input';
 import { Label } from '../../src/components/label/Label';
 import { Title } from '../../src/components/title/Title';
-import { fs, sp } from '../../src/dimensions';
 import { errorLines } from '../../src/helpers/errorLines';
-import { api } from '../../src/services/api/api';
-import { AuthContext } from '../../src/services/auth/authContext';
 import { colors } from '../../src/theme/colors';
 import { styles } from '../../src/theme/styles';
 import { types } from '../../src/types/types';
@@ -28,15 +27,6 @@ export default function Login() {
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const handleLogin = async () => {
-    // Validación local
-    const missing = [];
-    if (!username) missing.push('El usuario es obligatorio');
-    if (!password) missing.push('La contraseña es obligatoria');
-    if (missing.length) {
-      show('Faltan Datos', missing, undefined, 'error');
-      return;
-    }
-
     setLoading(true);
     try {
       const response = await api.post(authEndpoint, { username, password });
@@ -66,7 +56,7 @@ export default function Login() {
           <View style={styles.actions}>
             <Button label="Ingresar" fallbackLabel="Cargando..." onPress={handleLogin} disabled={loading} backgroundColor={colors.button} />
             <Button label="Registrarse" fallbackLabel="Registrando..." onPress={() => router.push('/(public)/register')} backgroundColor={colors.button} />
-            <Button label="¿Olvidaste tu contraseña?" onPress={() => router.push('/(public)/password-recover')} backgroundColor={colors.black} borderWidth={2} borderColor={'#d00000'} borderStyle={'solid'} />
+            <Button label="¿Olvidaste tu contraseña?" onPress={() => router.push('/(public)/password-recover')} backgroundColor={colors.black} borderWidth={1} borderColor={colors.red} borderStyle={'solid'} />
           </View>
         </View>
       </ScrollView>

@@ -36,13 +36,7 @@ export default function PasswordRecover() {
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const sendEmail = async () => {
-    // Validación local
-    if (!email) {
-      show('Recuperar contraseña', 'El correo es obligatorio', undefined, 'error');
-      return;
-    }
-
-    try {
+   try {
       setLoading(true);
       const response = await api.post(passwordRecoverEndpoint, { email }, { headers: { 'x-client': 'mobile' } });
       const successMsg = response?.data?.message || 'Enlace de recuperación enviado a tu correo';

@@ -17,7 +17,7 @@ const passwordUpdateEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_UPDATE;
 export default function PasswordReset() {
   const { token } = useLocalSearchParams();
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [alert, setAlert] = useState({ visible: false, title: '', message: '', buttons: [], type: 'info' });
   const show = (title, message, buttons, type = 'info') =>
@@ -31,15 +31,7 @@ export default function PasswordReset() {
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const handleReset = async () => {
-    const missing = [];
-    if (!password) missing.push('La contraseña es obligatoria');
-    if (!token) missing.push('El enlace de recuperación no es válido');
-
-    if (missing.length) {
-      show('Faltan datos', missing, undefined, 'error');
-      return;
-    }
-
+    setLoading(true);
     try {
       const response = await api.patch(passwordUpdateEndpoint, { token, newPassword: password });
       const msg = response?.data?.message || 'Contraseña actualizada correctamente';
