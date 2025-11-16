@@ -1,11 +1,11 @@
 import { Feather } from '@expo/vector-icons';
 import { useContext } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { fs, sp } from '../../../src/dimensions';
+import { colors } from '../../assets/styles/colors';
+import { fs, sp } from '../../assets/styles/screen';
+import { styles } from '../../assets/styles/styles';
 import { useMenu } from '../../hooks/useMenu';
 import { AuthContext } from '../../services/auth/authContext';
-import { colors } from '../../styles/colors';
-import { styles } from '../../styles/styles';
 import { Logo } from '../logo/Logo';
 
 const S = { logo: 42, gapXL: 20 };

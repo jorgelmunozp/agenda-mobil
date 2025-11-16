@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../../styles/colors';
+import { colors } from '../../assets/styles/colors';
 
 export const Pagination = ({ page, lastPage, onPrev, onNext }) => {
   const canPrev = page > 1;

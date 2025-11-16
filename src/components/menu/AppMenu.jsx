@@ -3,10 +3,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Platform, Pressable, StyleSheet as RNStyleSheet, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../assets/styles/colors';
+import { styles } from '../../assets/styles/styles';
 import { useMenu } from '../../hooks/useMenu';
 import { AuthContext } from '../../services/auth/authContext';
-import { colors } from '../../styles/colors';
-import { styles } from '../../styles/styles';
 import { Logo } from '../logo/Logo';
 
 const WIDTH = 320;

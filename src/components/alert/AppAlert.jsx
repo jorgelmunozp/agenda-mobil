@@ -1,16 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Modal, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../../styles/colors';
+import { colors } from '../../assets/styles/colors';
 import { Button } from '../button/Button';
 
-const VARIANT = {
+const Icon = {
   error: { icon: 'close', iconColor: '#f27474', ring: '#f27474', accent: '#ef4444' }, // rojo
   success: { icon: 'checkmark', iconColor: '#22c55e', ring: '#86efac', accent: '#22c55e' }, // verde
   info: { icon: 'information', iconColor: '#3b82f6', ring: '#93c5fd', accent: '#3b82f6' }, // azul
 };
 
 export const AppAlert = ({ visible, title, message, onClose, type = 'info', btnColor = colors.black }) => {
-  const icon = VARIANT[type] ?? VARIANT.info;
+  const icon = Icon[type] ?? Icon.info;
 
   const lines = Array.isArray(message)
     ? message.filter(Boolean)

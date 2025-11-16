@@ -1,9 +1,9 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../src/assets/styles/colors';
+import { fs } from '../../src/assets/styles/screen';
+import { styles } from '../../src/assets/styles/styles';
 import { Label } from '../../src/components/label/Label';
 import { Title } from '../../src/components/title/Title';
-import { fs } from '../../src/dimensions';
-import { colors } from '../../src/styles/colors';
-import { styles } from '../../src/styles/styles';
 
 export default function AboutUs() {
   return (

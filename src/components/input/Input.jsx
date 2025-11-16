@@ -1,8 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Platform, StyleSheet, TextInput, View } from 'react-native';
-import { fs, sp } from '../../../src/dimensions';
-import { colors } from '../../styles/colors';
-import { styles } from '../../styles/styles';
+import { colors } from '../../assets/styles/colors';
+import { fs, sp } from '../../assets/styles/screen';
+import { styles } from '../../assets/styles/styles';
 
 export const Input = ({ value, onChangeText, placeholder, style, inputStyle, isIcon = false, icon = 'person', placeholderTextColor = '#9CA3AF', multiline = false, ...props }) => {
   const wrapperSize = multiline

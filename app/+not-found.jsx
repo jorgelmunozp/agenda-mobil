@@ -1,9 +1,9 @@
 import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Platform, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../src/assets/styles/colors';
+import { sp } from '../src/assets/styles/screen';
 import { Button } from '../src/components/button/Button';
-import { sp } from '../src/dimensions';
-import { colors } from '../src/styles/colors';
 
 export default function NotFound() {
   const goBack = () => {

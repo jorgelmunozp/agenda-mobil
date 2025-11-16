@@ -1,11 +1,11 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { fs } from '../../../src/dimensions';
-import { colors } from '../../styles/colors';
+import { colors } from '../../assets/styles/colors';
+import { fs } from '../../assets/styles/screen';
 
 export const DateInput = ({ value, onChange, style, inputStyle }) => {
-  const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
   const [inner, setInner] = useState(value ? new Date(value) : new Date());
 
   const fmt = (d) => {
@@ -16,7 +16,7 @@ export const DateInput = ({ value, onChange, style, inputStyle }) => {
   };
 
   const handleChange = (_, selected) => {
-    setShow(false);
+    setOpen(false);
     if (selected) {
       setInner(selected);
       onChange && onChange(fmt(selected));
@@ -33,10 +33,10 @@ export const DateInput = ({ value, onChange, style, inputStyle }) => {
   // ===== MOBILE: picker nativo =====
   return (
     <View style={style}>
-      <Pressable onPress={() => setShow(true)} style={[s.input, inputStyle]}>
+      <Pressable onPress={() => setOpen(true)} style={[s.input, inputStyle]}>
         <Text style={s.text}>{value || 'Fecha'}</Text>
       </Pressable>
-      {show && <DateTimePicker value={inner} mode="date" display="default" onChange={handleChange} />}
+      {open && <DateTimePicker value={inner} mode="date" display="default" onChange={handleChange} />}
     </View>
   );
 };

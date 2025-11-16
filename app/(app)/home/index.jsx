@@ -2,14 +2,14 @@ import { Feather } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, FlatList as TaskList, View } from 'react-native';
+import { colors } from '../../../src/assets/styles/colors';
+import { sp } from '../../../src/assets/styles/screen';
+import { styles } from '../../../src/assets/styles/styles';
 import { Loading } from '../../../src/components/loading/Loading';
 import { AppMenu } from '../../../src/components/menu/AppMenu';
 import { Pagination } from '../../../src/components/pagination/Pagination';
 import { Title } from '../../../src/components/title/Title';
-import { sp } from '../../../src/dimensions';
 import { api } from '../../../src/services/api/api';
-import { colors } from '../../../src/styles/colors';
-import { styles } from '../../../src/styles/styles';
 import { AddTask } from './AddTask';
 import { TaskItem } from './TaskItem';
 

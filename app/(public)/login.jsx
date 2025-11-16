@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { useContext, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import { colors } from '../../src/assets/styles/colors';
+import { styles } from '../../src/assets/styles/styles';
 import { AppAlert } from '../../src/components/alert/AppAlert';
 import { Button } from '../../src/components/button/Button';
 import { Input } from '../../src/components/input/Input';
@@ -11,8 +13,6 @@ import { errorLines } from '../../src/helpers/errorLines';
 import { api } from '../../src/services/api/api';
 import { AuthContext } from '../../src/services/auth/authContext';
 import { types } from '../../src/services/auth/types/types';
-import { colors } from '../../src/styles/colors';
-import { styles } from '../../src/styles/styles';
 
 const authEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_AUTH;
 
@@ -35,7 +35,7 @@ export default function Login() {
       dispatch({ type: types.login, payload: { id: String(data?.id), name: username } });
     } catch (e) {
       const lines = errorLines(e);
-      show('Faltan Datos', lines.length ? lines : ['No se pudo iniciar sesión'], undefined, 'error');
+      show('Error', lines.length ? lines : ['No se pudo iniciar sesión'], undefined, 'error');
     } finally {
       setLoading(false);
     }

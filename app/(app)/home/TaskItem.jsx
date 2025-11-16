@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../../../src/styles/colors';
+import { colors } from '../../../src/assets/styles/colors';
 
 const openTask = (userId, taskId) => {
   router.replace({ pathname: '/(app)/users/[userId]/tasks/[taskId]', params: { userId: String(userId), taskId: String(taskId) } });

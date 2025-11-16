@@ -1,9 +1,9 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../src/assets/styles/colors';
+import { sp } from '../../src/assets/styles/screen';
+import { styles } from '../../src/assets/styles/styles';
 import { Label } from '../../src/components/label/Label';
 import { Title } from '../../src/components/title/Title';
-import { sp } from '../../src/dimensions';
-import { colors } from '../../src/styles/colors';
-import { styles } from '../../src/styles/styles';
 
 export default function Contact() {
   return (

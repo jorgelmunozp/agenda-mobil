@@ -2,13 +2,13 @@ import { Feather } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../../../../src/assets/styles/colors';
+import { sp } from '../../../../../src/assets/styles/screen';
+import { styles } from '../../../../../src/assets/styles/styles';
 import { Button } from '../../../../../src/components/button/Button';
 import { Loading } from '../../../../../src/components/loading/Loading';
 import { Title } from '../../../../../src/components/title/Title';
-import { sp } from '../../../../../src/dimensions';
 import { api } from '../../../../../src/services/api/api';
-import { colors } from '../../../../../src/styles/colors';
-import { styles } from '../../../../../src/styles/styles';
 
 const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
 

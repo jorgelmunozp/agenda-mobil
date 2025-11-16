@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { fs, sp } from '../../../src/dimensions';
-import { colors } from '../../styles/colors';
-import { styles } from '../../styles/styles';
+import { colors } from '../../assets/styles/colors';
+import { fs, sp } from '../../assets/styles/screen';
+import { styles } from '../../assets/styles/styles';
 
 export const Title = ({ children }) => (
   <View style={s.wrap}>

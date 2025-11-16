@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../../src/assets/styles/colors';
+import { sp } from '../../../src/assets/styles/screen';
 import { Button } from '../../../src/components/button/Button';
 import { DateInput } from '../../../src/components/input/DateInput';
 import { Input } from '../../../src/components/input/Input';
 import { TimeInput } from '../../../src/components/input/TimeInput';
-import { sp } from '../../../src/dimensions';
+import { Loading } from '../../../src/components/loading/Loading';
 import { api } from '../../../src/services/api/api';
-import { colors } from '../../../src/styles/colors';
 
 const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
 
@@ -44,11 +45,10 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
         <View style={s.modal}>
           {saving ? (
             <View style={s.loadingBox}>
-              <ActivityIndicator size="large" color={colors.black} />
-              <Text style={s.loadingText}>Guardando…</Text>
+              <Loading label={'Registrando tarea... '} />
             </View>
           ) : (
-            <>
+            <View style={s.container}>
               <Text style={s.label}>Nombre</Text>
               <View style={s.field}>
                 <Input value={item.name} onChangeText={(v) => handleChange('name', v)} isIcon={false} placeholder="Nombre" style={s.inputFull} inputStyle={s.inputSingle} />
@@ -72,7 +72,7 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
               <View style={s.actions}>
                 <Button label={'Guardar'} onPress={handleNewTask} backgroundColor={colors.black} disabled={saving} />
               </View>
-            </>
+            </View>
           )}
         </View>
       </View>
@@ -88,12 +88,15 @@ const s = StyleSheet.create({
     padding: sp(5),
   },
   modal: {
-    backgroundColor: colors.bg,
-    borderRadius: 16,
-    padding: 16,
     width: '96%',
     maxWidth: 900,
     alignSelf: 'center',
+    borderRadius: 16,
+  },
+  container: {
+    backgroundColor: '#f9fafb',
+    padding: 16,
+    borderRadius: 16,
   },
   label: {
     color: '#0f172a',
@@ -115,15 +118,14 @@ const s = StyleSheet.create({
     marginTop: 12,
   },
   loadingBox: {
-    paddingVertical: 40,
+    backgroundColor: colors.bg,
+    width: '100%',
+    height: '100%',
+    margin: 0,
+    padding: 0,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  loadingText: {
-    marginTop: 8,
-    color: '#0f172a',
-    fontSize: 14,
-    fontWeight: '500',
+    borderRadius: 16,
   },
 });
 

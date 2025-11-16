@@ -1,11 +1,11 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { fs } from '../../../src/dimensions';
-import { colors } from '../../styles/colors';
+import { colors } from '../../assets/styles/colors';
+import { fs } from '../../assets/styles/screen';
 
 export const TimeInput = ({ value, onChange, style, inputStyle }) => {
-  const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
   const [inner, setInner] = useState(new Date());
 
   const fmt = (d) => {
@@ -15,7 +15,7 @@ export const TimeInput = ({ value, onChange, style, inputStyle }) => {
   };
 
   const handleChange = (_, selected) => {
-    setShow(false);
+    setOpen(false);
     if (selected) {
       setInner(selected);
       onChange?.(fmt(selected));
@@ -35,10 +35,10 @@ export const TimeInput = ({ value, onChange, style, inputStyle }) => {
   // ===== MOBILE (lo que ya tenías y funciona) =====
   return (
     <View style={style}>
-      <Pressable onPress={() => setShow(true)} style={[s.input, inputStyle]}>
+      <Pressable onPress={() => setOpen(true)} style={[s.input, inputStyle]}>
         <Text style={s.text}>{value || 'Hora'}</Text>
       </Pressable>
-      {show && <DateTimePicker value={inner} mode="time" display="default" onChange={handleChange} />}
+      {open && <DateTimePicker value={inner} mode="time" display="default" onChange={handleChange} />}
     </View>
   );
 };

@@ -1,5 +1,5 @@
-import { sp } from '../dimensions';
 import { colors } from './colors';
+import { sp } from './screen';
 
 export const styles = {
   box: { flex: 1, backgroundColor: colors.primary },
