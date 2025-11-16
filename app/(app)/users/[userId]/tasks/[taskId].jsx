@@ -3,12 +3,12 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../../../../../src/components/button/Button';
-import { Title } from '../../../../../src/components/title/Title';
 import { Loading } from '../../../../../src/components/loading/Loading';
+import { Title } from '../../../../../src/components/title/Title';
 import { sp } from '../../../../../src/dimensions';
 import { api } from '../../../../../src/services/api/api';
-import { colors } from '../../../../../src/theme/colors';
-import { styles } from '../../../../../src/theme/styles';
+import { colors } from '../../../../../src/styles/colors';
+import { styles } from '../../../../../src/styles/styles';
 
 const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
 
@@ -31,7 +31,7 @@ export default function Task() {
   }, [userId, taskId]);
 
   // Loading fallback
-   if (loading) {
+  if (loading) {
     return <Loading label={'Cargando tarea... '} />;
   }
 

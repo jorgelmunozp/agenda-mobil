@@ -1,13 +1,13 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Animated, Easing, Platform, StyleSheet as RNStyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from '../../services/auth/authContext';
-import { Logo } from '../logo/Logo';
-import { colors } from '../../theme/colors';
-import { useMenu } from '../../hooks/useMenu';
-import { styles } from '../../theme/styles';
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Animated, Easing, Platform, Pressable, StyleSheet as RNStyleSheet, StyleSheet, Text, View } from 'react-native';
+import { useMenu } from '../../hooks/useMenu';
+import { AuthContext } from '../../services/auth/authContext';
+import { colors } from '../../styles/colors';
+import { styles } from '../../styles/styles';
+import { Logo } from '../logo/Logo';
 
 const WIDTH = 320;
 const DURATION = 360;
@@ -111,5 +111,5 @@ const s = StyleSheet.create({
   closeBtn: { position: 'absolute', right: 0 },
   item: { paddingVertical: 12 },
   rowInner: { flexDirection: 'row', alignItems: 'center', marginLeft: 6, gap: 10 },
-  text: { fontFamily: 'Itim_400Regular', color: '#111827', fontSize: 14, fontWeight: '600',  },
+  text: { fontFamily: 'Itim_400Regular', color: '#111827', fontSize: 14, fontWeight: '600' },
 });

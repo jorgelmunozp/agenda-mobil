@@ -8,8 +8,8 @@ import { Pagination } from '../../../src/components/pagination/Pagination';
 import { Title } from '../../../src/components/title/Title';
 import { sp } from '../../../src/dimensions';
 import { api } from '../../../src/services/api/api';
-import { colors } from '../../../src/theme/colors';
-import { styles } from '../../../src/theme/styles';
+import { colors } from '../../../src/styles/colors';
+import { styles } from '../../../src/styles/styles';
 import { AddTask } from './AddTask';
 import { TaskItem } from './TaskItem';
 

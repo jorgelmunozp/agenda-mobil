@@ -1,8 +1,8 @@
-import { useEffect, useReducer } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useReducer } from 'react';
+import { types } from './types/types';
 import { AuthContext } from './authContext';
 import { authReducer } from './authReducer';
-import { types } from '../../types/types';
 
 const initialState = {
   user: null,

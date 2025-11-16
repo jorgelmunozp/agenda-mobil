@@ -2,17 +2,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import { useContext, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { AuthContext } from '../../src/services/auth/authContext';
-import { api } from '../../src/services/api/api';
 import { AppAlert } from '../../src/components/alert/AppAlert';
 import { Button } from '../../src/components/button/Button';
 import { Input } from '../../src/components/input/Input';
 import { Label } from '../../src/components/label/Label';
 import { Title } from '../../src/components/title/Title';
 import { errorLines } from '../../src/helpers/errorLines';
-import { colors } from '../../src/theme/colors';
-import { styles } from '../../src/theme/styles';
-import { types } from '../../src/types/types';
+import { api } from '../../src/services/api/api';
+import { AuthContext } from '../../src/services/auth/authContext';
+import { types } from '../../src/services/auth/types/types';
+import { colors } from '../../src/styles/colors';
+import { styles } from '../../src/styles/styles';
 
 const authEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_AUTH;
 

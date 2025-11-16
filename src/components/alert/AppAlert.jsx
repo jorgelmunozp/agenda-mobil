@@ -1,7 +1,7 @@
-import { ScrollView, Modal, Platform, StyleSheet, Text, View } from 'react-native';
-import { Button } from '../button/Button';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../../theme/colors';
+import { Modal, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../styles/colors';
+import { Button } from '../button/Button';
 
 const VARIANT = {
   error: { icon: 'close', iconColor: '#f27474', ring: '#f27474', accent: '#ef4444' }, // rojo

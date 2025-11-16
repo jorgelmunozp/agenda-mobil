@@ -1,16 +1,15 @@
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { useLocalSearchParams, router } from 'expo-router';
 import { AppAlert } from '../../../src/components/alert/AppAlert';
 import { Button } from '../../../src/components/button/Button';
 import { Input } from '../../../src/components/input/Input';
 import { Label } from '../../../src/components/label/Label';
 import { Title } from '../../../src/components/title/Title';
-import { sp } from '../../../src/dimensions';
 import { errorLines } from '../../../src/helpers/errorLines';
 import { api } from '../../../src/services/api/api';
-import { colors } from '../../../src/theme/colors';
-import { styles } from '../../../src/theme/styles';
+import { colors } from '../../../src/styles/colors';
+import { styles } from '../../../src/styles/styles';
 
 const passwordUpdateEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_UPDATE;
 

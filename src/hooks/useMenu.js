@@ -1,9 +1,8 @@
-// src/hooks/useMenu.js
 import { useCallback, useEffect, useMemo, useSyncExternalStore } from 'react';
 import { Platform, BackHandler } from 'react-native';
 import { usePathname } from 'expo-router';
 
-// ---- store global (sin provider) ----
+// ---- store global ----
 let _open = false;
 const _subs = new Set();
 const _emit = () => { for (const s of _subs) s(); };

@@ -1,6 +1,6 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { colors } from '../../../src/theme/colors';
-import { styles } from '../../../src/theme/styles';
+import { colors } from '../../styles/colors';
+import { styles } from '../../styles/styles';
 
 export const Loading = ({ label = 'Cargando…' }) => {
   return (
@@ -9,7 +9,7 @@ export const Loading = ({ label = 'Cargando…' }) => {
       <Text style={s.text}>{label}</Text>
     </View>
   );
-}
+};
 
 const s = StyleSheet.create({
   container: { flex: 1, alignItems: 'center', justifyContent: 'center' },

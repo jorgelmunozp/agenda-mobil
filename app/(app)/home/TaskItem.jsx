@@ -1,9 +1,9 @@
-import { router, useLocalSearchParams } from 'expo-router';
-import { Platform, Pressable, Text, View, StyleSheet } from 'react-native';
-import { colors } from '../../../src/theme/colors';
 import { Feather } from '@expo/vector-icons';
+import { router, useLocalSearchParams } from 'expo-router';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors } from '../../../src/styles/colors';
 
-const openTask = (userId,taskId) => {
+const openTask = (userId, taskId) => {
   router.replace({ pathname: '/(app)/users/[userId]/tasks/[taskId]', params: { userId: String(userId), taskId: String(taskId) } });
 };
 
@@ -16,7 +16,7 @@ export const TaskItem = ({ item }) => {
   const time = item?.task?.time ?? 'hora';
 
   return (
-    <Pressable onPress={() => openTask(userId,taskId)} style={({ hovered, pressed }) => [s.card, hovered && s.cardHover, pressed && s.cardPressed]}>
+    <Pressable onPress={() => openTask(userId, taskId)} style={({ hovered, pressed }) => [s.card, hovered && s.cardHover, pressed && s.cardPressed]}>
       <Feather name="star" size={18} color={colors.white} style={{ marginRight: 28 }} />
       <View style={{ flex: 1 }}>
         <Text style={s.cardTitle}>{title}</Text>

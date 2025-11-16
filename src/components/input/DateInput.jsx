@@ -1,8 +1,8 @@
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { fs } from '../../../src/dimensions';
-import { colors } from '../../theme/colors';
+import { colors } from '../../styles/colors';
 
 export const DateInput = ({ value, onChange, style, inputStyle }) => {
   const [show, setShow] = useState(false);

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Button } from '../../../src/components/button/Button';
 import { DateInput } from '../../../src/components/input/DateInput';
 import { Input } from '../../../src/components/input/Input';
 import { TimeInput } from '../../../src/components/input/TimeInput';
-import { Button } from '../../../src/components/button/Button';
-import { api } from '../../../src/services/api/api';
 import { sp } from '../../../src/dimensions';
-import { colors } from '../../../src/theme/colors';
+import { api } from '../../../src/services/api/api';
+import { colors } from '../../../src/styles/colors';
 
 const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
 
@@ -112,7 +112,7 @@ const s = StyleSheet.create({
   actions: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 12  
+    marginTop: 12,
   },
   loadingBox: {
     paddingVertical: 40,

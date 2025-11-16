@@ -7,13 +7,12 @@ import { Button } from '../../src/components/button/Button';
 import { Input } from '../../src/components/input/Input';
 import { Label } from '../../src/components/label/Label';
 import { Title } from '../../src/components/title/Title';
-import { sp } from '../../src/dimensions';
 import { errorLines } from '../../src/helpers/errorLines';
 import { api } from '../../src/services/api/api';
 import { AuthContext } from '../../src/services/auth/authContext';
-import { colors } from '../../src/theme/colors';
-import { styles } from '../../src/theme/styles';
-import { types } from '../../src/types/types';
+import { types } from '../../src/services/auth/types/types';
+import { colors } from '../../src/styles/colors';
+import { styles } from '../../src/styles/styles';
 
 const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
 

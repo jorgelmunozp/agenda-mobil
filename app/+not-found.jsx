@@ -1,13 +1,16 @@
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Button } from '../src/components/button/Button';
 import { sp } from '../src/dimensions';
-import { colors } from '../src/theme/colors';
-import { Feather } from '@expo/vector-icons';
+import { colors } from '../src/styles/colors';
 
-export default function NotFound(){
-  const goBack=()=>{ if(router.canGoBack()) router.back(); else router.replace('/'); };
-  
+export default function NotFound() {
+  const goBack = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace('/');
+  };
+
   return (
     <View style={s.box}>
       <View style={s.card}>

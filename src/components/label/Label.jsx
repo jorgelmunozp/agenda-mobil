@@ -1,7 +1,7 @@
 import { StyleSheet, Text } from 'react-native';
 import { fs, sp } from '../../../src/dimensions';
-import { colors } from '../../theme/colors';
-import { styles } from '../../theme/styles';
+import { colors } from '../../styles/colors';
+import { styles } from '../../styles/styles';
 
 export const Label = ({ children }) => <Text style={s.label}>{children}</Text>;
 

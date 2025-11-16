@@ -1,14 +1,14 @@
-import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
-import { useContext } from "react";
-import { AuthContext } from '../../services/auth/authContext';
-import { sp, fs } from '../../../src/dimensions';
-import { colors } from '../../theme/colors';
-import { styles } from '../../theme/styles';
-import { Logo } from '../logo/Logo';
 import { Feather } from '@expo/vector-icons';
+import { useContext } from 'react';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { fs, sp } from '../../../src/dimensions';
 import { useMenu } from '../../hooks/useMenu';
+import { AuthContext } from '../../services/auth/authContext';
+import { colors } from '../../styles/colors';
+import { styles } from '../../styles/styles';
+import { Logo } from '../logo/Logo';
 
-const S = { logo:42, gapXL:20 };
+const S = { logo: 42, gapXL: 20 };
 
 export const Header = () => {
   const { user } = useContext(AuthContext);
@@ -22,7 +22,7 @@ export const Header = () => {
       <View style={[s.container, backgroundClass]}>
         <Text style={[s.title, titleClass]}>Organize</Text>
         <Text style={[s.title, uClass, { paddingRight: sp(4), overflow: 'visible' }]}>U</Text>
-        {user && ( <Logo width={25} height={25} color={s.logo.color} style={s.logo} /> )}
+        {user && <Logo width={25} height={25} color={s.logo.color} style={s.logo} />}
       </View>
 
       {/* Icono Menú */}

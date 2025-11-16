@@ -10,6 +10,6 @@ export const errorLines = (e) => {
   const msg = data?.error?.message || data?.message || data?.detail || e?.message || 'Ocurrió un error';
   return String(msg)
     .split('\n')
-    .map((t) => t.trim())
+    .map((m) => m.trim())
     .filter(Boolean);
 };

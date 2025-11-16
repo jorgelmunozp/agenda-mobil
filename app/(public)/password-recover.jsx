@@ -6,10 +6,10 @@ import { Button } from '../../src/components/button/Button';
 import { Input } from '../../src/components/input/Input';
 import { Label } from '../../src/components/label/Label';
 import { Title } from '../../src/components/title/Title';
-import { api } from '../../src/services/api/api';
-import { colors } from '../../src/theme/colors';
-import { styles } from '../../src/theme/styles';
 import { errorLines } from '../../src/helpers/errorLines';
+import { api } from '../../src/services/api/api';
+import { colors } from '../../src/styles/colors';
+import { styles } from '../../src/styles/styles';
 
 const passwordRecoverEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_RECOVER;
 
@@ -36,7 +36,7 @@ export default function PasswordRecover() {
   const hide = () => setAlert((a) => ({ ...a, visible: false }));
 
   const sendEmail = async () => {
-   try {
+    try {
       setLoading(true);
       const response = await api.post(passwordRecoverEndpoint, { email }, { headers: { 'x-client': 'mobile' } });
       const successMsg = response?.data?.message || 'Enlace de recuperación enviado a tu correo';
