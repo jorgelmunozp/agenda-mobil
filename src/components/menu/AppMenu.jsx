@@ -107,9 +107,9 @@ const s = StyleSheet.create({
   },
   menu: { backgroundColor: '#ddd', paddingVertical: 18, paddingHorizontal: 26, width: '100%', flex: 1 },
   header: { position: 'relative', display: 'flex', flexDirection: 'row', height: 32, marginBottom: 32, paddingBottom: 64, alignItems: 'center', justifyContent: 'space-between', borderBottomColor: colors.primary, borderBottomWidth: 2 },
-  logo: { color: colors.primary, position: 'absolute', left: 0},
+  logo: { color: colors.primary, position: 'absolute', left: 0 },
   closeBtn: { position: 'absolute', right: 0 },
   item: { paddingVertical: 12 },
   rowInner: { flexDirection: 'row', alignItems: 'center', marginLeft: 6, gap: 10 },
-  text: { color: '#111827', fontSize: 14 },
+  text: { fontFamily: 'Itim_400Regular', color: '#111827', fontSize: 14, fontWeight: '600',  },
 });

@@ -13,7 +13,7 @@ const s=StyleSheet.create({
     wrap:{ marginBottom:16 }, 
     txt:{
         fontSize: fs(styles.title),
-        fontWeight: '800', 
+        fontWeight: '600', 
         color: colors.white, 
         fontFamily: 'Itim_400Regular',
         marginBottom:sp(styles.gap),

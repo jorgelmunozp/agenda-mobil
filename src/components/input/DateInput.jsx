@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { fs } from '../../../src/dimensions';
 import { colors } from '../../theme/colors';
 
 export const DateInput = ({ value, onChange, style, inputStyle }) => {
@@ -52,7 +53,7 @@ const s = StyleSheet.create({
   },
   text: {
     color: '#000',
-    fontSize: 14,
+    fontSize: fs(16),
     textAlign: 'center',
   },
 });

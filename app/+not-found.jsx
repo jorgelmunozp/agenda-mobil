@@ -1,23 +1,21 @@
-import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { router } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
-import { colors } from '../src/theme/colors';
+import { Button } from '../src/components/button/Button';
 import { sp } from '../src/dimensions';
+import { colors } from '../src/theme/colors';
+import { Feather } from '@expo/vector-icons';
 
 export default function NotFound(){
   const goBack=()=>{ if(router.canGoBack()) router.back(); else router.replace('/'); };
   
-  return(
+  return (
     <View style={s.box}>
       <View style={s.card}>
-        <Feather name="alert-triangle" size={48} color={colors.white} style={{marginBottom:sp(8)}}/>
+        <Feather name="alert-triangle" size={48} color={colors.white} style={{ marginBottom: sp(8) }} />
         <Text style={s.title}>404</Text>
         <Text style={s.subtitle}>Página no encontrada</Text>
         <Text style={s.desc}>La ruta que intentas abrir no existe o cambió de lugar.</Text>
-        <Pressable onPress={goBack} style={({pressed})=>[s.btn,pressed&&s.btnPressed]}>
-          <Feather name="arrow-left" size={18} color={colors.white}/>
-          <Text style={s.btnText}>Volver</Text>
-        </Pressable>
+        <Button label={'🡠  Volver'} onPress={goBack} backgroundColor={colors.black} />
       </View>
     </View>
   );

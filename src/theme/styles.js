@@ -3,7 +3,7 @@ import { colors } from './colors';
 
 export const styles = {
   box: { flex: 1, backgroundColor: colors.primary },
-  view: { alignItems: 'flex-start', paddingTop: sp(4), paddingBottom: sp(80) },
+  view: { alignItems: 'flex-start', paddingTop: sp(20), paddingBottom: sp(80) },
   container: { width: '100%', maxWidth: sp(1400), paddingHorizontal: sp(20) },
   header: { height: sp(130), width: '100%', backgroundColor: colors.primary },
   title: sp(24),

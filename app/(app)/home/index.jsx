@@ -111,7 +111,7 @@ const s = StyleSheet.create({
   plusBtn: {
     position: 'absolute',
     right: sp(0),
-    top: sp(15),
+    top: sp(2),
     width: 36,
     height: 36,
     borderRadius: 18,

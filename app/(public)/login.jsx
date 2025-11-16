@@ -66,11 +66,7 @@ export default function Login() {
           <View style={styles.actions}>
             <Button label="Ingresar" fallbackLabel="Cargando..." onPress={handleLogin} disabled={loading} backgroundColor={colors.button} />
             <Button label="Registrarse" fallbackLabel="Registrando..." onPress={() => router.push('/(public)/register')} backgroundColor={colors.button} />
-            <Pressable onPress={() => router.push('/(public)/password-recover')} style={{ backgroundColor: '#d00000', borderRadius: sp(styles.radius + 2), padding: sp(1), marginTop: sp(12) }}>
-              <View style={{ backgroundColor: colors.black, height: sp(styles.btnH), borderRadius: sp(styles.radius + 2), alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={{ color: colors.white, fontSize: fs(14), fontWeight: '800' }}>¿Olvidaste tu contraseña?</Text>
-              </View>
-            </Pressable>
+            <Button label="¿Olvidaste tu contraseña?" onPress={() => router.push('/(public)/password-recover')} backgroundColor={colors.black} borderWidth={2} borderColor={'#d00000'} borderStyle={'solid'} />
           </View>
         </View>
       </ScrollView>

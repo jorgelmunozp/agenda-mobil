@@ -1,9 +1,9 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { DateInput } from '../../../src/components/input/DateInput';
 import { Input } from '../../../src/components/input/Input';
 import { TimeInput } from '../../../src/components/input/TimeInput';
+import { Button } from '../../../src/components/button/Button';
 import { api } from '../../../src/services/api/api';
 import { sp } from '../../../src/dimensions';
 import { colors } from '../../../src/theme/colors';
@@ -69,10 +69,8 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
                 <Input value={item.message} onChangeText={(v) => handleChange('message', v)} isIcon={false} placeholder="Mensaje" multiline style={s.inputFull} inputStyle={s.inputMultiline} />
               </View>
 
-              <View style={s.modalActions}>
-                <Pressable onPress={handleNewTask} style={s.primaryBtn} disabled={saving}>
-                  <Text style={s.primaryText}>Guardar</Text>
-                </Pressable>
+              <View style={s.actions}>
+                <Button label={'Guardar'} onPress={handleNewTask} backgroundColor={colors.black} disabled={saving} />
               </View>
             </>
           )}
@@ -99,7 +97,7 @@ const s = StyleSheet.create({
   },
   label: {
     color: '#0f172a',
-    fontWeight: '600',
+    fontFamily: 'Itim_400Regular',
     marginTop: 6,
     fontSize: 12,
   },
@@ -111,22 +109,10 @@ const s = StyleSheet.create({
   inputFull: { width: '100%' },
   inputSingle: { height: sp(80) },
   inputMultiline: { height: sp(180), textAlignVertical: 'top' },
-  modalActions: {
+  actions: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 10,
-    marginTop: 12,
-  },
-  primaryBtn: {
-    backgroundColor: colors.black,
-    borderRadius: 10,
-    paddingVertical: 16,
-    width: '100%',
-    alignItems: 'center',
-  },
-  primaryText: {
-    color: colors.white,
-    fontWeight: '700',
+    justifyContent: 'center',
+    marginTop: 12  
   },
   loadingBox: {
     paddingVertical: 40,
