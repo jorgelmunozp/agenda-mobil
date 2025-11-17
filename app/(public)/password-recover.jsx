@@ -20,7 +20,7 @@ export default function PasswordRecover() {
 
   const { alert, showSuccess, showError, hideAlert } = useAlert();
 
-  const sendEmail = async () => {
+  const handleSendEmail = async () => {
     try {
       setLoading(true);
 
@@ -55,7 +55,7 @@ export default function PasswordRecover() {
           <Input value={email} onChangeText={setEmail} isIcon={true} icon="at" keyboardType="email-address" autoCapitalize="none" />
 
           <View style={styles.actions}>
-            <Button label="Enviar enlace" fallbackLabel="Enviando..." onPress={sendEmail} disabled={loading} backgroundColor={colors.button} />
+            <Button label="Enviar enlace" fallbackLabel="Enviando..." onPress={handleSendEmail} disabled={loading} backgroundColor={colors.button} />
             <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={() => router.push('/(public)/login')} backgroundColor={colors.button} />
           </View>
         </View>
