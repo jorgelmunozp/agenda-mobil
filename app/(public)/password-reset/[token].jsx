@@ -36,8 +36,8 @@ export default function PasswordReset() {
         [msg],
         [
           {
-            text: 'Ir al login',
-            onPress: () => router.replace('/(public)/login'),
+            text: 'Cerrar',
+            onPress: () => window.close(),
           },
         ],
       );
