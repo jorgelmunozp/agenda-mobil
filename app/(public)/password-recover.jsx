@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { colors } from '../../src/assets/styles/colors';
@@ -12,42 +12,31 @@ import { errorLines } from '../../src/helpers/errorLines';
 import { api } from '../../src/services/api/api';
 import { useAlert } from '../../src/hooks/useAlert';
 
-const passwordUpdateEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_UPDATE;
+const passwordRecoverEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_RECOVER;
 
-export default function PasswordReset() {
-  const { token } = useLocalSearchParams();
-  const [password, setPassword] = useState('');
+export default function PasswordRecover() {
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
   const { alert, showSuccess, showError, hideAlert } = useAlert();
 
-  const handleReset = async () => {
-    setLoading(true);
+  const sendEmail = async () => {
     try {
-      const response = await api.patch(passwordUpdateEndpoint, {
-        token,
-        newPassword: password,
-      });
+      setLoading(true);
 
-      const msg =
-        response?.data?.message || 'Contraseña actualizada correctamente';
+      const response = await api.post(passwordRecoverEndpoint, { email }, { headers: { 'x-client': 'mobile' } });
 
-      showSuccess(
-        'Contraseña actualizada',
-        [msg],
-        [
-          {
-            text: 'Ir al login',
-            onPress: () => router.replace('/(public)/login'),
-          },
-        ],
-      );
+      const successMsg = response?.data?.message || 'Enlace de recuperación enviado a tu correo';
+
+      showSuccess('Listo', successMsg, [
+        {
+          text: 'Ir al Login',
+          onPress: () => router.replace('/(public)/login'),
+        },
+      ]);
     } catch (e) {
       const lines = errorLines(e);
-      const message =
-        lines.length > 0
-          ? lines
-          : ['No se pudo actualizar la contraseña'];
+      const message = lines.length > 0 ? lines : ['No se pudo enviar el correo de recuperación'];
 
       showError('Error', message);
     } finally {
@@ -55,58 +44,23 @@ export default function PasswordReset() {
     }
   };
 
-  const handleCancel = () => {
-    router.push('/(public)/login');
-  };
-
   return (
     <>
-      <ScrollView
-        style={styles.box}
-        contentContainerStyle={styles.view}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView style={styles.box} contentContainerStyle={styles.view} keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
-          <Title>CREAR NUEVA CONTRASEÑA</Title>
+          <Title>RECUPERAR CONTRASEÑA</Title>
 
-          <Label>Contraseña</Label>
-          <Input
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            isIcon={true}
-            icon="lock-closed-outline"
-            autoCapitalize="none"
-            placeholder="Escribe tu nueva contraseña"
-          />
+          <Label>Correo</Label>
+          <Input value={email} onChangeText={setEmail} isIcon={true} icon="at" keyboardType="email-address" autoCapitalize="none" />
 
           <View style={styles.actions}>
-            <Button
-              label="Confirmar"
-              fallbackLabel="Guardando..."
-              onPress={handleReset}
-              disabled={loading}
-              backgroundColor={colors.button}
-            />
-            <Button
-              label="Cancelar"
-              fallbackLabel="Cancelando..."
-              onPress={handleCancel}
-              backgroundColor={colors.button}
-            />
+            <Button label="Enviar enlace" fallbackLabel="Enviando..." onPress={sendEmail} disabled={loading} backgroundColor={colors.button} />
+            <Button label="Cancelar" fallbackLabel="Cancelando..." onPress={() => router.push('/(public)/login')} backgroundColor={colors.button} />
           </View>
         </View>
       </ScrollView>
 
-      <AppAlert
-        visible={alert.visible}
-        title={alert.title}
-        message={alert.message}
-        buttons={alert.buttons}
-        type={alert.type}
-        btnColor={colors.black}
-        onClose={hideAlert}
-      />
+      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hideAlert} />
     </>
   );
 }
