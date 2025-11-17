@@ -12,6 +12,6 @@ export const Loading = ({ label = 'Cargando…' }) => {
 };
 
 const s = StyleSheet.create({
-  container: { flex: 1, width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 12, margin: 0, padding: 0 },
+  container: { flex: 1, width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', margin: 0, padding: 0 },
   text: { marginTop: 8, color: colors.white },
 });
