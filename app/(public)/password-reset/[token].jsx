@@ -32,7 +32,7 @@ export default function PasswordReset() {
       const msg = response?.data?.message || 'Contraseña actualizada correctamente';
 
       showSuccess(
-        'Contraseña actualizada',
+        'Listo',
         [msg],
         [
           {
