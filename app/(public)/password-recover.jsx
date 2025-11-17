@@ -28,7 +28,8 @@ export default function PasswordRecover() {
 
       const successMsg = response?.data?.message || 'Enlace de recuperación enviado a tu correo';
 
-      showSuccess('Listo', successMsg, [
+      // Navega cuando el usuario pulse el botón del alert
+      showSuccess('Enlace enviado', successMsg, [
         {
           text: 'Ir al Login',
           onPress: () => router.replace('/(public)/login'),

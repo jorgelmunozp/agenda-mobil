@@ -9,7 +9,9 @@ const Icon = {
   info: { icon: 'information', iconColor: '#3b82f6', ring: '#3b82f6', accent: '#3b82f6' },
 };
 
-export const AppAlert = ({ visible, title, message, onClose, type = 'info' }) => {
+export const AppAlert = ({ visible, title, message, onClose, type = 'info', buttons, btnColor = colors.black }) => {
+  if (!visible) return null;
+
   const icon = Icon[type] ?? Icon.info;
 
   const lines = Array.isArray(message)
@@ -19,8 +21,22 @@ export const AppAlert = ({ visible, title, message, onClose, type = 'info' }) =>
         .map((t) => t.trim())
         .filter(Boolean);
 
+  // si no vienen botones, usa el botón por defecto
+  const actions = Array.isArray(buttons) && buttons.length ? buttons : [{ text: 'Aceptar' }];
+
+  const handleClose = () => {
+    if (typeof onClose === 'function') onClose();
+  };
+
+  const handleButtonPress = (btn) => {
+    if (typeof btn?.onPress === 'function') {
+      btn.onPress();
+    }
+    handleClose();
+  };
+
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={handleClose}>
       <ScrollView style={s.overlay} contentContainerStyle={s.box}>
         <View style={s.card}>
           <View style={s.iconWrap}>
@@ -41,7 +57,9 @@ export const AppAlert = ({ visible, title, message, onClose, type = 'info' }) =>
           </View>
 
           <View style={s.actions}>
-            <Button label={'Aceptar'} onPress={() => onClose?.()} backgroundColor={colors.black} />
+            {actions.map((btn, idx) => (
+              <Button key={idx} label={btn.text || 'Aceptar'} onPress={() => handleButtonPress(btn)} backgroundColor={btnColor} />
+            ))}
           </View>
         </View>
       </ScrollView>
@@ -51,20 +69,49 @@ export const AppAlert = ({ visible, title, message, onClose, type = 'info' }) =>
 
 const s = StyleSheet.create({
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.35)' },
-  box: { flexGrow: 1, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 40 },
-  card: { backgroundColor: '#fff', borderRadius: 8, padding: 20, width: '90%', maxWidth: 520, alignSelf: 'center', ...Platform.select({ web: { outlineStyle: 'none' } }) },
+  box: {
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 40,
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 20,
+    width: '90%',
+    maxWidth: 520,
+    alignSelf: 'center',
+    ...Platform.select({ web: { outlineStyle: 'none' } }),
+  },
   iconWrap: { alignItems: 'center', marginTop: 18, marginBottom: 10 },
-  iconCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 5, alignItems: 'center', justifyContent: 'center' },
+  iconCircle: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    borderWidth: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
-  title: { fontSize: 18, fontWeight: '600', color: '#4b5563', textAlign: 'center', marginTop: 8, marginBottom: 20 },
-  msg: { fontSize: 10, color: '#111827', textAlign: 'center', lineHeight: 22, marginBottom: 6 },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#4b5563',
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 20,
+  },
 
   list: { gap: 8, marginBottom: 6 },
   li: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   dot: { width: 7, height: 7, borderRadius: 4 },
   liText: { flex: 1, fontSize: 10, lineHeight: 26 },
 
-  actions: { marginTop: 32 },
-  btn: { width: '100%', borderRadius: 12, paddingVertical: 14, alignItems: 'center', justifyContent: 'center' },
-  btnText: { color: '#fff', fontWeight: '700', fontSize: 12 },
+  actions: {
+    marginTop: 32,
+    gap: 12,
+  },
 });
