@@ -4,12 +4,12 @@ import { colors } from '../../assets/styles/colors';
 import { Button } from '../button/Button';
 
 const Icon = {
-  error: { icon: 'close', iconColor: '#f27474', ring: '#f27474', accent: '#ef4444' }, // rojo
-  success: { icon: 'checkmark', iconColor: '#22c55e', ring: '#86efac', accent: '#22c55e' }, // verde
-  info: { icon: 'information', iconColor: '#3b82f6', ring: '#93c5fd', accent: '#3b82f6' }, // azul
+  error: { icon: 'close', iconColor: '#f27474', ring: '#f27474', accent: '#ef4444' },
+  success: { icon: 'checkmark', iconColor: '#22c55e', ring: '#22c55e', accent: '#22c55e' },
+  info: { icon: 'information', iconColor: '#3b82f6', ring: '#3b82f6', accent: '#3b82f6' },
 };
 
-export const AppAlert = ({ visible, title, message, onClose, type = 'info', btnColor = colors.black }) => {
+export const AppAlert = ({ visible, title, message, onClose, type = 'info' }) => {
   const icon = Icon[type] ?? Icon.info;
 
   const lines = Array.isArray(message)
@@ -35,7 +35,7 @@ export const AppAlert = ({ visible, title, message, onClose, type = 'info', btnC
             {lines.map((t, i) => (
               <View key={i} style={s.li}>
                 <View style={[s.dot, { backgroundColor: icon.accent }]} />
-                <Text style={[s.liText, { color: icon.accent }]}>{t}</Text>
+                <Text style={[s.liText, { color: '#000' }]}>{t}</Text>
               </View>
             ))}
           </View>
@@ -56,7 +56,7 @@ const s = StyleSheet.create({
   iconWrap: { alignItems: 'center', marginTop: 18, marginBottom: 10 },
   iconCircle: { width: 96, height: 96, borderRadius: 48, borderWidth: 5, alignItems: 'center', justifyContent: 'center' },
 
-  title: { fontSize: 18, fontWeight: '600', color: '#4b5563', textAlign: 'center', marginTop: 14, marginBottom: 20 },
+  title: { fontSize: 18, fontWeight: '600', color: '#4b5563', textAlign: 'center', marginTop: 8, marginBottom: 20 },
   msg: { fontSize: 10, color: '#111827', textAlign: 'center', lineHeight: 22, marginBottom: 6 },
 
   list: { gap: 8, marginBottom: 6 },

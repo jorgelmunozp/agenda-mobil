@@ -1,16 +1,16 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { colors } from '../../../src/assets/styles/colors';
-import { styles } from '../../../src/assets/styles/styles';
-import { AppAlert } from '../../../src/components/alert/AppAlert';
-import { Button } from '../../../src/components/button/Button';
-import { Input } from '../../../src/components/input/Input';
-import { Label } from '../../../src/components/label/Label';
-import { Title } from '../../../src/components/title/Title';
-import { errorLines } from '../../../src/helpers/errorLines';
-import { api } from '../../../src/services/api/api';
-import { useAlert } from '../../../src/hooks/useAlert';
+import { colors } from '../../src/assets/styles/colors';
+import { styles } from '../../src/assets/styles/styles';
+import { AppAlert } from '../../src/components/alert/AppAlert';
+import { Button } from '../../src/components/button/Button';
+import { Input } from '../../src/components/input/Input';
+import { Label } from '../../src/components/label/Label';
+import { Title } from '../../src/components/title/Title';
+import { errorLines } from '../../src/helpers/errorLines';
+import { api } from '../../src/services/api/api';
+import { useAlert } from '../../src/hooks/useAlert';
 
 const passwordUpdateEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_PASSWORD_UPDATE;
 
