@@ -22,8 +22,6 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
   const handleChange = (k, v) => setItem((prev) => ({ ...prev, [k]: v }));
 
   const handleNewTask = async () => {
-    if (!item.name || !item.date || !item.time) return;
-
     try {
       setSaving(true);
 
@@ -40,6 +38,8 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
       showSuccess('Tarea registrada', 'La tarea se guardó correctamente.');
 
     } catch (e) {
+      const msg = e?.response?.data?.error?.message || e.message || 'Error registrando tarea.';
+      showError('Error', msg);
       console.log('Error creating task: ', e?.message);
     } finally {
       setSaving(false);
