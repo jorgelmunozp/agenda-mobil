@@ -2,18 +2,22 @@ import { useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../../src/assets/styles/colors';
 import { sp } from '../../../src/assets/styles/screen';
+import { AppAlert } from '../../../src/components/alert/AppAlert';
 import { Button } from '../../../src/components/button/Button';
 import { DateInput } from '../../../src/components/input/DateInput';
 import { Input } from '../../../src/components/input/Input';
 import { TimeInput } from '../../../src/components/input/TimeInput';
 import { Loading } from '../../../src/components/loading/Loading';
 import { api } from '../../../src/services/api/api';
+import { useAlert } from '../../../src/hooks/useAlert';
 
 const usersEndpoint = process.env.EXPO_PUBLIC_ENDPOINT_USERS;
 
 export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
   const [item, setItem] = useState({ name: '', date: '', time: '', message: '' });
   const [saving, setSaving] = useState(false);
+
+  const { alert, showSuccess, showError, hideAlert } = useAlert();
 
   const handleChange = (k, v) => setItem((prev) => ({ ...prev, [k]: v }));
 
@@ -30,7 +34,11 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
       }
 
       setItem({ name: '', date: '', time: '', message: '' });
+
+      if (typeof onClose === 'function') onClose();
       setModal(false);
+      showSuccess('Tarea registrada', 'La tarea se guardó correctamente.');
+
     } catch (e) {
       console.log('Error creating task: ', e?.message);
     } finally {
@@ -39,44 +47,48 @@ export const AddTask = ({ userId, visible, setModal, onClose, onSaved }) => {
   };
 
   return (
-    <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
-      <View style={s.overlay}>
-        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
-        <View style={s.modal}>
-          {saving ? (
-            <View style={s.loadingBox}>
-              <Loading label={'Registrando tarea... '} />
-            </View>
-          ) : (
-            <View style={s.container}>
-              <Text style={s.label}>Nombre</Text>
-              <View style={s.field}>
-                <Input value={item.name} onChangeText={(v) => handleChange('name', v)} isIcon={false} placeholder="Nombre" style={s.inputFull} inputStyle={s.inputSingle} />
+    <>
+      <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
+        <View style={s.overlay}>
+          <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
+          <View style={s.modal}>
+            {saving ? (
+              <View style={s.loadingBox}>
+                <Loading label={'Registrando tarea... '} />
               </View>
+            ) : (
+              <View style={s.container}>
+                <Text style={s.label}>Nombre</Text>
+                <View style={s.field}>
+                  <Input value={item.name} onChangeText={(v) => handleChange('name', v)} isIcon={false} placeholder="Nombre" style={s.inputFull} inputStyle={s.inputSingle} />
+                </View>
 
-              <Text style={s.label}>Fecha</Text>
-              <View style={s.field}>
-                <DateInput value={item.date} onChange={(v) => handleChange('date', v)} style={s.inputFull} inputStyle={s.inputSingle} />
-              </View>
+                <Text style={s.label}>Fecha</Text>
+                <View style={s.field}>
+                  <DateInput value={item.date} onChange={(v) => handleChange('date', v)} style={s.inputFull} inputStyle={s.inputSingle} />
+                </View>
 
-              <Text style={s.label}>Hora</Text>
-              <View style={s.field}>
-                <TimeInput value={item.time} onChange={(v) => handleChange('time', v)} style={s.inputFull} inputStyle={s.inputSingle} />
-              </View>
+                <Text style={s.label}>Hora</Text>
+                <View style={s.field}>
+                  <TimeInput value={item.time} onChange={(v) => handleChange('time', v)} style={s.inputFull} inputStyle={s.inputSingle} />
+                </View>
 
-              <Text style={s.label}>Mensaje</Text>
-              <View style={s.field}>
-                <Input value={item.message} onChangeText={(v) => handleChange('message', v)} isIcon={false} placeholder="Mensaje" multiline style={s.inputFull} inputStyle={s.inputMultiline} />
-              </View>
+                <Text style={s.label}>Mensaje</Text>
+                <View style={s.field}>
+                  <Input value={item.message} onChangeText={(v) => handleChange('message', v)} isIcon={false} placeholder="Mensaje" multiline style={s.inputFull} inputStyle={s.inputMultiline} />
+                </View>
 
-              <View style={s.actions}>
-                <Button label={'Guardar'} onPress={handleNewTask} backgroundColor={colors.black} disabled={saving} />
+                <View style={s.actions}>
+                  <Button label={'Guardar'} onPress={handleNewTask} backgroundColor={colors.black} disabled={saving} />
+                </View>
               </View>
-            </View>
-          )}
+            )}
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+
+      <AppAlert visible={alert.visible} title={alert.title} message={alert.message} buttons={alert.buttons} type={alert.type} btnColor={colors.black} onClose={hideAlert} />
+    </>
   );
 };
 
